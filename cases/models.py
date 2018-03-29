@@ -26,7 +26,8 @@ class Person(models.Model):
 class Case(models.Model):
     case_short_description = models.CharField(max_length=200)
     open_date = models.DateTimeField('date case was opened')
-    caseworkers = models.ManyToManyField(Person)
+    caseworker = models.ForeignKey(Person, on_delete=models.CASCADE, default=None)
+    isOpen = models.BooleanField(default=True)
 
     def __str__(self):
         return self.case_short_description

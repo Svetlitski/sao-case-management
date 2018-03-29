@@ -1,0 +1,9 @@
+<h1>{{ person.name }}</h1>
+
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+<ul>
+{% for case in person.case_set.all %}
+    <li>{{ case.case_short_description }}</li>
+{% endfor %}
+</ul>

@@ -1,0 +1,9 @@
+{% if caseworker_list %}
+    <ul>
+    {% for caseworker in caseworker_list %}
+        <li><a href="{% url 'cases:detail' caseworker.id %}">{{ caseworker.name }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>The office is empty.</p>
+{% endif %}
