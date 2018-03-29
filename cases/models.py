@@ -39,6 +39,9 @@ class Case(models.Model):
         Person, on_delete=models.CASCADE, default=None)
     isOpen = models.BooleanField(default=True)
 
+    def get_division(self):
+        return self.caseworker.get_division_display()
+
     def __str__(self):
         return self.case_short_description
 
