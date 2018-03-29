@@ -1,4 +1,5 @@
 from django.db import models
+from django.forms import ModelForm
 from django.utils.text import slugify
 
 
@@ -31,12 +32,20 @@ class Person(models.Model):
 
 
 class Case(models.Model):
+    client_name = models.CharField(max_length=30)
     case_short_description = models.CharField(max_length=200)
     open_date = models.DateTimeField('date case was opened')
-    caseworker = models.ForeignKey(Person, on_delete=models.CASCADE, default=None)
+    caseworker = models.ForeignKey(
+        Person, on_delete=models.CASCADE, default=None)
     isOpen = models.BooleanField(default=True)
 
     def __str__(self):
         return self.case_short_description
 
-# Create your models here.
+
+class IntakeForm(ModelForm):
+    class Meta:
+        model = Case
+        fields = ('client_name', 'case_short_description',
+                  'open_date', 'caseworker')
+        widgets = {'datetime'}
