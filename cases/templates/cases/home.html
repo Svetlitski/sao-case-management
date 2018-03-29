@@ -1,5 +1,12 @@
-<h1> SAO Case Management System </h1>
+{# Load the tag library #}
+{% load bootstrap3 %}
+
+{# Load CSS and JavaScript #}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+<head><title>SAO CMS</title></head>
+<h1> SAO Case Management System</h1>
 <ul>
-	<li> <a href="{% url 'cases:index'%}">Caseworkers</a> </li>
-	<li><a href="{% url 'cases:intake'%}">Intake form</a></li>
+	<h2><li> <a href="{% url 'cases:index'%}">Caseworkers</a> </li></h2>
+	<h2><li><a href="{% url 'cases:intake'%}">Intake form</a></li></h2>
 </ul>

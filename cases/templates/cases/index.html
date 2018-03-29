@@ -1,9 +1,15 @@
+{# Load the tag library #}
+{% load bootstrap3 %}
+
+{# Load CSS and JavaScript #}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+<head><title>Caseworkers</title></head>
 {% if caseworker_list %}
-    <ul>
     {% for caseworker in caseworker_list %}
-        <li><a href="{% url 'cases:detail' caseworker.slug %}">{{ caseworker.name }}</a></li>
+        <h4><a href="{% url 'cases:detail' caseworker.slug %}">{{ caseworker.name }}</a></h4>
+        <hr>
     {% endfor %}
-    </ul>
 {% else %}
     <p>The office is empty.</p>
 {% endif %}
