@@ -1,4 +1,5 @@
 from django.db import models
+#from django.utils.text import slugify
 
 
 class Person(models.Model):
@@ -18,6 +19,14 @@ class Person(models.Model):
         default=ACADEMIC,
     )
     name = models.CharField(max_length=30)
+    """
+    slug = models.SlugField(max_length=30)
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+        super().save()
+    """
 
     def __str__(self):
         return self.name
