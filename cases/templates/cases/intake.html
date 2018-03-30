@@ -1,31 +1,17 @@
-{# Load the tag library #}
 {% load bootstrap4 %}
-
-{# Load CSS and JavaScript #}
+{% load static %}
 {% bootstrap_css %}
 {% bootstrap_javascript %}
-{% load static %}
 <link rel="stylesheet" type="text/css" href="{% static 'cases/style.css' %}" />
 <head>
 	<title>Intake Form</title>
-	<link type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.6/themes/redmond/jquery-ui.css" rel="Stylesheet" />
-	<script language="javascript" type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script> 
-	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.6/jquery-ui.min.js"></script> 
 </head>
 <h1>Intake Form</h1>
-{% block content %}
-<form role="form" class = "form-horizontal" action="" method="post">
+<form role="form" action="" method="post">
 	{% csrf_token %}
-	{% bootstrap_form form layout="horizontal" %}
+	{% bootstrap_form form %}
 	{% buttons %}
-		<button type="submit" class="btn btn-primary">Submit</button>
+		<button id =type="submit" class="btn btn-primary">Submit</button>
 		<button type="reset" class = "btn btn-secondary">Reset form</button>
 	{% endbuttons %}
 </form>
-{% endblock %}
-
-<script type="text/javascript"> 
-$(function(){
-	$("#id_open_date").datepicker();
-});
-</script>

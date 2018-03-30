@@ -1,12 +1,15 @@
-{# Load the tag library #}
 {% load bootstrap4 %}
-
-{# Load CSS and JavaScript #}
+{% load static %}
 {% bootstrap_css %}
 {% bootstrap_javascript %}
+<link rel="stylesheet" type="text/css" href="{% static 'cases/style.css' %}" />
+
+<link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Roboto'>
+
 <head><title>SAO CMS</title></head>
-<h1> SAO Case Management System</h1>
-<ul>
-	<h2><li> <a href="{% url 'cases:index'%}">Caseworkers</a> </li></h2>
-	<h2><li><a href="{% url 'cases:intake'%}">Intake form</a></li></h2>
-</ul>
+<h1 id="homeH1"> SAO Case Management System</h1>
+	{% buttons %}
+	<h2><a  id="btnCaseworkers" class="btn btn-outline-primary btn-lg btn-block" text-align="center"  vertical-align="middle" href="{% url 'cases:index'%}">Caseworkers</a></h2>
+	<h2><a id="btnIntake" class="btn btn-outline-warning btn-lg btn-block" text-align="center" vertical-align="middle" href="{% url 'cases:intake'%}">Intake form</a></h2>
+</div>
+	{% endbuttons %}
