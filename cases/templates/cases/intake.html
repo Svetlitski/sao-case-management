@@ -1,9 +1,11 @@
 {# Load the tag library #}
-{% load bootstrap3 %}
+{% load bootstrap4 %}
 
 {# Load CSS and JavaScript #}
 {% bootstrap_css %}
 {% bootstrap_javascript %}
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'cases/style.css' %}" />
 <head>
 	<title>Intake Form</title>
 	<link type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.6/themes/redmond/jquery-ui.css" rel="Stylesheet" />
@@ -15,7 +17,10 @@
 <form role="form" class = "form-horizontal" action="" method="post">
 	{% csrf_token %}
 	{% bootstrap_form form layout="horizontal" %}
-	{% buttons submit='Submit' reset='Reset form' layout="horizontal" %}{% endbuttons %}
+	{% buttons %}
+		<button type="submit" class="btn btn-primary">Submit</button>
+		<button type="reset" class = "btn btn-secondary">Reset form</button>
+	{% endbuttons %}
 </form>
 {% endblock %}
 

@@ -1,0 +1,25 @@
+
+{# Load the tag library #}
+{% load bootstrap4 %}
+
+{# Load CSS and JavaScript #}
+{% bootstrap_css %}
+{% bootstrap_javascript jquery='full' %}
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'cases/style.css' %}" />
+
+<head><title>Login</title></head>
+<h2>Log in to your account</h2>
+<br>
+{% block content %}
+
+<form method="post" action="{% url 'cases:login' %}">
+{% csrf_token %}
+{% bootstrap_form form %}
+{% buttons %}
+    <button type="submit" class="btn btn-primary">Log in</button>
+    <button type="reset" class = "btn btn-secondary">Clear</button>
+{% endbuttons %}
+</form>
+
+{% endblock %}
