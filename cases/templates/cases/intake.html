@@ -1,18 +1,15 @@
+{% extends "cases/base.html" %}
 {% load bootstrap4 %}
-{% load static %}
-{% bootstrap_css %}
-{% bootstrap_javascript %}
-<link rel="stylesheet" type="text/css" href="{% static 'cases/style.css' %}" />
-<link rel="shortcut icon" type="image/jpg" href="{% static 'cases/favicon.jpg' %}"/>
-<head>
-	<title>Intake Form</title>
-</head>
-<h1>Intake Form</h1>
-<form role="form" action="" method="post">
-	{% csrf_token %}
-	{% bootstrap_form form %}
-	{% buttons %}
-		<button id =type="submit" class="btn btn-primary">Submit</button>
-		<button type="reset" class = "btn btn-secondary">Reset form</button>
-	{% endbuttons %}
-</form>
+{% block title %}Intake form{% endblock %}
+
+{% block body %}
+	<h1>Intake form</h1>
+	<form role="form" action="" method="post">
+		{% csrf_token %}
+		{% bootstrap_form form %}
+		{% buttons %}
+			<button id =type="submit" class="btn btn-primary">Submit</button>
+			<button type="reset" class = "btn btn-secondary">Reset form</button>
+		{% endbuttons %}
+	</form>
+{% endblock %}

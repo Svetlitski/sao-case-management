@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en">
+<head> 
+	{% load bootstrap4 %}
+	{% load static %}
+	{% bootstrap_css %}
+	{% bootstrap_javascript %}
+	<link rel="stylesheet" href="{% static 'cases/style.css' %}" type="text/css" media="screen" />
+	<link rel="shortcut icon" type="image/jpg" href="{% static 'cases/favicon.jpg' %}"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<title>{% block title %}{% endblock %}</title>
+</head>
+<body>
+{% block body %}
+
+{% endblock %}
+</body>
+</html>

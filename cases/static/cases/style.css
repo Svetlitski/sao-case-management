@@ -1,12 +1,17 @@
-body {margin:0;padding:40;}
+body {
+	margin:3%;
+	padding:0;
+}
 
-
+#caseworkerList {
+	list-style-type: none;
+	text-align: center;
+}
 #homeH1 {
 	text-align: center;
 }
-#btnIntake,
-#btnCaseworkers {
-	text-align: center;
-	vertical-align: middle;
-	margin: auto;
+
+#indexBtns {
+	
 }
+

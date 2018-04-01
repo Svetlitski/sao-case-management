@@ -1,15 +1,11 @@
+{% extends "cases/base.html" %}
 {% load bootstrap4 %}
-{% load static %}
-{% bootstrap_css %}
-{% bootstrap_javascript %}
-<link rel="stylesheet" type="text/css" href="{% static 'cases/style.css' %}" />
-<link rel="shortcut icon" type="image/jpg" href="{% static 'cases/favicon.jpg' %}"/>
+{% block title %}SAO CMS{% endblock %}
 
-
-<head><title>SAO CMS</title></head>
-<h1 id="homeH1"> SAO Case Management System</h1>
+{% block body %}
+	<h1 id="homeH1"> SAO Case Management System</h1>
 	{% buttons %}
-	<h2><a  id="btnCaseworkers" class="btn btn-outline-primary btn-lg btn-block" text-align="center"  vertical-align="middle" href="{% url 'cases:index'%}">Caseworkers</a></h2>
-	<h2><a id="btnIntake" class="btn btn-outline-warning btn-lg btn-block" text-align="center" vertical-align="middle" href="{% url 'cases:intake'%}">Intake form</a></h2>
-</div>
+		<h2><a  id="btnCaseworkers" class="btn btn-outline-primary btn-lg btn-block"  href="{% url 'cases:index'%}">Caseworkers</a></h2>
+		<h2><a id="btnIntake" class="btn btn-outline-warning btn-lg btn-block" href="{% url 'cases:intake'%}">Intake form</a></h2>
 	{% endbuttons %}
+{% endblock %}

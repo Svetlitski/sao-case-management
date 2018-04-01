@@ -1,18 +1,25 @@
-{# Load the tag library #}
+{% extends "cases/base.html" %}
 {% load bootstrap4 %}
+{% block title %}Caseworkers{% endblock %}
 
-{# Load CSS and JavaScript #}
-{% load static %}
-{% bootstrap_css %}
-{% bootstrap_javascript %}
-<link rel="stylesheet" type="text/css" href="{% static 'cases/style.css' %}" />
-<link rel="shortcut icon" type="image/jpg" href="{% static 'cases/favicon.jpg' %}"/>
-<head><title>Caseworkers</title></head>
-{% if caseworker_list %}
-    {% for caseworker in caseworker_list %}
-        <h4><a href="{% url 'cases:detail' caseworker.slug %}">{{ caseworker.name }}</a></h4>
-        <hr>
-    {% endfor %}
-{% else %}
-    <p>The office is empty.</p>
-{% endif %}
+{% block body %}
+	{% if caseworker_list %}
+		<ul id="caseworkerList">
+	    {% for caseworker in caseworker_list %}
+	    	{% buttons %}
+	    	{% if user.username != caseworker.name %}
+	        <li><a  id = "indexBtns" href="{% url 'cases:detail' caseworker.slug %}" class = "btn btn-secondary btn-block disabled">
+	        	<h3>{{caseworker.name}}</h3>
+	        </a></li>
+	        {% else %}
+	        <li><a  id = "indexBtns" href="{% url 'cases:detail' caseworker.slug %}" class = "btn btn-primary btn-block">
+	        	<h3>{{caseworker.name}}</h3>
+	        </a></li>
+	        {% endif %}
+	        {% endbuttons %}
+	    {% endfor %}
+		</ul>
+	{% else %}
+	    <p>The office is empty.</p>
+	{% endif %}
+{% endblock %}
