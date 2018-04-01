@@ -12,7 +12,7 @@
 
 
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
-
+{% if user.username == person.name %}
 {% for case in person.case_set.all %}
 	<hr>
 	<h3>{{case.client_name}}</h3>
@@ -22,4 +22,4 @@
 		<li>Description: {{ case.incident_description }}</li>
 	</ul>
 {% endfor %}
-
+{% endif %}
