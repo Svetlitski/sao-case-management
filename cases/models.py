@@ -1,11 +1,8 @@
 from django.db import models
 from django.forms import ModelForm
 from django.utils.text import slugify
-from django.conf import settings
 from phonenumber_field.modelfields import PhoneNumberField
 from django.contrib.auth.models import User
-from django.contrib.auth.hashers import PBKDF2PasswordHasher as hasher
-import datetime
 
 
 ACADEMIC = 'ACA'
@@ -20,6 +17,7 @@ DIVISION_CHOICES = (
 )
 
 
+# An individual caseworker
 class Person(models.Model):
     division = models.CharField(
         max_length=3,
@@ -38,7 +36,7 @@ class Person(models.Model):
             myUser = User.objects.create_user(
                 self.name, self.name + "@berkeleysao.org", "default")
             myUser.save()
-            self.account =  myUser
+            self.account = myUser
         super().save()
 
     def __str__(self):
@@ -49,11 +47,6 @@ class Person(models.Model):
 
     class Meta:
         verbose_name = 'Caseworker'
-
-
-year_from_now = datetime.date.today()
-year_from_now = datetime.date(
-    year_from_now.year + 1, year_from_now.month, year_from_now.day)
 
 
 class Case(models.Model):
@@ -81,4 +74,3 @@ class IntakeForm(ModelForm):
         fields = ['division', 'client_name',
                   'client_email', 'client_phone', 'client_SID',
                   'incident_description']
-        #widgets = {'datetime'}

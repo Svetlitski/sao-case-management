@@ -1,18 +1,14 @@
+from .models import Case, Person
+
 from django.contrib import admin
 admin.AdminSite.site_header = "SAO Case Administration"
-
-from .models import Case, Person
-from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
-from django.contrib.auth.models import User
-
-
-
 
 
 @admin.register(Person)
 class PersonAdmin(admin.ModelAdmin):
     fields = ['name', 'division']
-    list_display = ('name','division','number_of_active_cases')
+    list_display = ('name', 'division', 'number_of_active_cases')
+    list_filter = ['division']
 
 
 @admin.register(Case)
