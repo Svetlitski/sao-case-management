@@ -2,8 +2,11 @@
 {% load bootstrap4 %}
 
 {# Load CSS and JavaScript #}
+{% load static %}
 {% bootstrap_css %}
 {% bootstrap_javascript %}
+<link rel="stylesheet" type="text/css" href="{% static 'cases/style.css' %}" />
+<link rel="shortcut icon" type="image/jpg" href="{% static 'cases/favicon.jpg' %}"/>
 <head><title>Caseworkers</title></head>
 {% if caseworker_list %}
     {% for caseworker in caseworker_list %}

@@ -4,6 +4,9 @@
 {# Load CSS and JavaScript #}
 {% bootstrap_css %}
 {% bootstrap_javascript %}
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'cases/style.css' %}" />
+<link rel="shortcut icon" type="image/jpg" href="{% static 'cases/favicon.jpg' %}"/>
 <head><title>{{ person.name }}</title></head>
 <h1>{{ person.name }}</h1>
 

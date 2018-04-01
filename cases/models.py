@@ -3,6 +3,7 @@ from django.forms import ModelForm
 from django.utils.text import slugify
 from django.conf import settings
 from phonenumber_field.modelfields import PhoneNumberField
+from django.contrib.auth.models import User
 import datetime
 
 
