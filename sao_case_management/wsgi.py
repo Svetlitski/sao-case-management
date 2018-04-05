@@ -1,5 +1,5 @@
 """
-WSGI config for case_management_demo project.
+WSGI config for sao-case-management project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 
@@ -11,6 +11,6 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "case_management_demo.settings")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "sao-case-management.settings")
 
 application = get_wsgi_application()
