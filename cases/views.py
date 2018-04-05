@@ -1,6 +1,8 @@
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
+from django.contrib.auth import logout
+from django.shortcuts import redirect
 
 from .models import Person, IntakeForm
 
@@ -9,6 +11,11 @@ from .models import Person, IntakeForm
 class OfficeLoginView(LoginView):
     template_name = 'cases/login.html'
     next = '/home'
+
+
+def logout_view(request):
+    logout(request)
+    return redirect('login/')
 
 
 # List of all caseworkers, serving as a directory of sorts
