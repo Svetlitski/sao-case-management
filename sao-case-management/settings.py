@@ -27,6 +27,22 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+"""
+To be uncommented when we stop using the django development server
+
+# Security settings
+
+SECURE_SSL_REDIRECT = True
+
+SESSION_COOKIE_SECURE = True
+
+CSRF_COOKIE_SECURE = True
+
+# Increase to 31536000 (1 year) when sure this doesn't break things
+SECURE_HSTS_SECONDS = 3600 
+"""
+
+
 
 # Application definition
 
@@ -103,12 +119,19 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
+# Login urls
+
+LOGIN_URL = '/login/'
+
+LOGIN_REDIRECT_URL = '/'  # Home page
+
+
 # Internationalization
 # https://docs.djangoproject.com/en/2.0/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/Los_Angeles'
 
 USE_I18N = True
 
@@ -122,6 +145,4 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-LOGIN_URL = '/login/'
 
-LOGIN_REDIRECT_URL = '/' # Home page

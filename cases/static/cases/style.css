@@ -2,19 +2,18 @@ body {
 	margin: 3%;
 }
 
-
-
 #caseworkerList {
 	list-style-type: none;
 	text-align: center;
 }
+
 #homeH1 {
 	text-align: center;
 }
 
 #logoutBtnDiv {
 	display: block;
-	margin-bottom: 1%;
+	margin-bottom: 2%;
 }
 
 #caseworkerList {
