@@ -58,8 +58,8 @@ class Case(models.Model):
     open_date = models.DateField('date case was opened', auto_now_add=True)
     close_date = models.DateField(
         'date case was closed', default=None, blank=True, null=True)
-    caseworker = models.ForeignKey(
-        Person, on_delete=models.CASCADE, default=None, blank=True, null=True)
+    caseworkers = models.ManyToManyField(
+        Person, blank=True)
     division = models.CharField(
         max_length=3, choices=DIVISION_CHOICES, default=ACADEMIC)
     isOpen = models.BooleanField('case open?', default=True)
