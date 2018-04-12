@@ -3,8 +3,9 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
 from django.contrib.auth import logout
 from django.shortcuts import redirect
+from django.forms import DateInput
 
-from .models import Person, IntakeForm
+from .models import Person, IntakeForm, Case
 
 
 # Caseworker login page
@@ -34,6 +35,10 @@ class PersonDetailView(LoginRequiredMixin, generic.DetailView):
     model = Person
     template_name = 'cases/persondetail.html'
 
+class CaseUpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = Case
+    fields=['incident_description', 'isOpen', 'close_date']
+    template_name = 'cases/caseupdate.html'
 
 # Intake form
 class IntakeView(LoginRequiredMixin, generic.FormView):
@@ -50,3 +55,7 @@ class IntakeView(LoginRequiredMixin, generic.FormView):
 # Homepage reached after login
 class HomeView(IndexView):
     template_name = 'cases/home.html'
+    context_object_name = 'caseworker'
+
+    def get_queryset(self):
+        return Person.objects.get(account=self.request.user)

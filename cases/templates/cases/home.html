@@ -5,7 +5,7 @@
 {% block body %}
 	<h1 id="homeH1"> SAO Case Management System</h1>
 	{% buttons %}
-		<h2><a  id="btnCaseworkers" class="btn btn-outline-primary btn-lg btn-block"  href="{% url 'cases:index'%}">Caseworkers</a></h2>
+		<h2><a  id="btnCases" class="btn btn-outline-primary btn-lg btn-block"  href="{% url 'cases:detail' caseworker.slug %}">Cases</a></h2>
 		<h2><a id="btnIntake" class="btn btn-outline-warning btn-lg btn-block" href="{% url 'cases:intake'%}">Intake form</a></h2>
 	{% endbuttons %}
 {% endblock %}

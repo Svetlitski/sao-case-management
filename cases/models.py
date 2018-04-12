@@ -3,6 +3,7 @@ from django.forms import ModelForm
 from django.utils.text import slugify
 from phonenumber_field.modelfields import PhoneNumberField
 from django.contrib.auth.models import User
+from multiselectfield import MultiSelectField
 
 
 ACADEMIC = 'ACA'
@@ -60,17 +61,22 @@ class Case(models.Model):
         'date case was closed', default=None, blank=True, null=True)
     caseworkers = models.ManyToManyField(
         Person, blank=True)
-    division = models.CharField(
-        max_length=3, choices=DIVISION_CHOICES, default=ACADEMIC)
+    divisions = MultiSelectField(choices=DIVISION_CHOICES, blank=True)
     isOpen = models.BooleanField('case open?', default=True)
+    slug = models.SlugField(max_length=30, default="")
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.client_SID)
+        super().save()
 
     def __str__(self):
-        return self.client_name + ", " + self.open_date.__str__() + ", " + self.division
+        return self.client_name + ", " + self.open_date.__str__() + ", " + self.divisions.__str__()
 
 
 class IntakeForm(ModelForm):
     class Meta:
         model = Case
-        fields = ['division', 'client_name',
+        fields = ['divisions', 'client_name',
                   'client_email', 'client_phone', 'client_SID',
                   'incident_description']
