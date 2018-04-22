@@ -6,6 +6,6 @@ urlpatterns = [
     path('', views.HomeView.as_view(), name='home'),
     path('logout', views.logout_view, name='logout'),
     path('intake/', views.IntakeView.as_view(), name='intake'),
-    path('case/<str:slug>/', views.CaseUpdateView.as_view(), name='case_update'),
-    path('<str:slug>/', views.CaseListView.as_view(), name='detail'),
+    path('case/<str:slug>/', views.CaseDetailView.as_view(), name='case_detail'),
+    path('<str:slug>/', views.CaseListView.as_view(), name='case_list'),
 ]

@@ -4,8 +4,8 @@ from django.contrib.auth.views import LoginView
 from django.contrib.auth import logout
 from django.shortcuts import redirect
 from django.conf import settings
-
-from .models import Person, IntakeForm, Case
+from django.views.generic.edit import FormMixin
+from .models import Person, IntakeForm, Case, CaseUpdateForm
 
 
 # Caseworker login page
@@ -25,11 +25,29 @@ class CaseListView(LoginRequiredMixin, generic.DetailView):
     template_name = 'cases/caselist.html'
 
 
-# For recording case updates
-class CaseUpdateView(LoginRequiredMixin, generic.UpdateView):
+class CaseDetailView(LoginRequiredMixin, FormMixin, generic.DetailView):
     model = Case
-    fields = ['incident_description', 'isOpen', 'close_date']
-    template_name = 'cases/caseupdate.html'
+    template_name = 'cases/casedetail.html'
+    form_class = CaseUpdateForm
+    success_url = '/'  # TODO: figure out how to replace this with a call to reverse
+
+    def get_context_data(self, **kwargs):
+        context = super(CaseDetailView, self).get_context_data(**kwargs)
+        context['form'] = CaseUpdateForm(initial={'case': self.object})
+        return context
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        form = self.get_form()
+        if form.is_valid():
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
+
+    def form_valid(self, form):
+
+        form.save()
+        return super(CaseDetailView, self).form_valid(form)
 
 
 # Case intake form

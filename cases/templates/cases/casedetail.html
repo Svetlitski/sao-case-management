@@ -1,0 +1,30 @@
+{% extends "cases/base.html" %}
+{% load bootstrap4 %}
+{% block title %}{{case.client_name}}{% endblock %}
+
+{% block body %}
+<h3>{{case.client_name}}</h3>
+<ul>
+	<li>Case status: {{ case.isOpen|yesno:"open,closed" }}</li>
+	<li>Divisions: {{case.divisions}}</li>
+	<li>Date opened: {{ case.open_date }}</li>
+	<li>Phone: {{case.client_phone}}</li>
+	<li>Email: {{case.client_email}}</li>
+	<li>SID: {{case.client_SID}}</li>
+	<li>Description: {{ case.incident_description }}</li>
+	<li>Date closed: {{case.close_date}}</li>
+</ul>
+
+{% for update in case.caseupdate_set.all %}
+	<h4>{{update.creation_date}}</h4>
+	<p>{{update.update_description}}</p>
+{% endfor %}
+
+<h5>Add a case update</h5>
+<form role="form" action="" method="post">
+		{% csrf_token %}
+		{% bootstrap_form form %}
+		{% bootstrap_button "Save update" button_type="submit" button_class="btn-primary" %}
+	</form>
+
+{% endblock %}

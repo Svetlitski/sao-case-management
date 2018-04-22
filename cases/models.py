@@ -5,6 +5,7 @@ from phonenumber_field.modelfields import PhoneNumberField
 from django.contrib.auth.models import User
 from multiselectfield import MultiSelectField
 from django.core.exceptions import ValidationError
+from django import forms
 
 
 ACADEMIC = 'ACA'
@@ -76,7 +77,27 @@ class Case(models.Model):
 
     def clean(self):
         if(not (self.client_email or self.client_phone)):
-            raise ValidationError("You must record the client's contact information.")
+            raise ValidationError(
+                "You must record the client's contact information.")
+
+
+class CaseUpdate(models.Model):
+    case = models.ForeignKey(
+        Case, on_delete=models.CASCADE, blank=True, null=True)
+    creation_date = models.DateTimeField(auto_now_add=True)
+    update_description = models.TextField()
+
+    class Meta:
+        ordering = ['-creation_date']  # ordered by most recent
+
+
+class CaseUpdateForm(ModelForm):
+    class Meta:
+        model = CaseUpdate
+        fields = ['update_description', 'case']
+        # user does not manually select which case a case update is for
+        labels = {'update_description': ""}
+        widgets = {'case': forms.HiddenInput()}
 
 
 class IntakeForm(ModelForm):
