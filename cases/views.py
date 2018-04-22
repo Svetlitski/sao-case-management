@@ -3,7 +3,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
 from django.contrib.auth import logout
 from django.shortcuts import redirect
-from django.forms import DateInput
+from django.conf import settings
 
 from .models import Person, IntakeForm, Case
 
@@ -11,38 +11,29 @@ from .models import Person, IntakeForm, Case
 # Caseworker login page
 class OfficeLoginView(LoginView):
     template_name = 'cases/login.html'
-    next = '/home'
 
 
+# Used for logout button, simply redirects to login page
 def logout_view(request):
     logout(request)
-    return redirect('login/')
+    return redirect(settings.LOGIN_REDIRECT_URL)
 
 
-# List of all caseworkers, serving as a directory of sorts
-class IndexView(LoginRequiredMixin, generic.ListView):
-    login_url = 'login/'
-    template_name = 'cases/index.html'
-    context_object_name = 'caseworker_list'
-
-    def get_queryset(self):
-        return Person.objects.order_by('name')
-
-
-# Information on all of a caseworker's cases
-class PersonDetailView(LoginRequiredMixin, generic.DetailView):
-    login_url = 'login/'
+# Information on all of one caseworker's cases, viewable only by them
+class CaseListView(LoginRequiredMixin, generic.DetailView):
     model = Person
-    template_name = 'cases/persondetail.html'
+    template_name = 'cases/caselist.html'
 
+
+# For recording case updates
 class CaseUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Case
-    fields=['incident_description', 'isOpen', 'close_date']
+    fields = ['incident_description', 'isOpen', 'close_date']
     template_name = 'cases/caseupdate.html'
 
-# Intake form
+
+# Case intake form
 class IntakeView(LoginRequiredMixin, generic.FormView):
-    login_url = 'login/'
     template_name = 'cases/intake.html'
     form_class = IntakeForm
     success_url = '/'  # Go to homepage
@@ -52,8 +43,8 @@ class IntakeView(LoginRequiredMixin, generic.FormView):
         return super().form_valid(form)
 
 
-# Homepage reached after login
-class HomeView(IndexView):
+# Home page reached after login
+class HomeView(LoginRequiredMixin, generic.ListView):
     template_name = 'cases/home.html'
     context_object_name = 'caseworker'
 

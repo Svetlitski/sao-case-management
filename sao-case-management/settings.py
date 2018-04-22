@@ -121,7 +121,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Login urls
 
-LOGIN_URL = '/login/'
+LOGIN_URL = 'login/'
 
 LOGIN_REDIRECT_URL = '/'  # Home page
 
@@ -144,5 +144,3 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
 STATIC_URL = '/static/'
-
-
