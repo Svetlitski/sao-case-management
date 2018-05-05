@@ -5,7 +5,8 @@ from django.contrib.auth import logout
 from django.shortcuts import redirect
 from django.conf import settings
 from django.views.generic.edit import FormMixin
-from .models import Person, IntakeForm, Case, CaseUpdateForm
+from .models import Person, Case
+from .forms import CaseUpdateForm, IntakeForm
 
 
 # Caseworker login page
@@ -45,7 +46,6 @@ class CaseDetailView(LoginRequiredMixin, FormMixin, generic.DetailView):
             return self.form_invalid(form)
 
     def form_valid(self, form):
-
         form.save()
         return super(CaseDetailView, self).form_valid(form)
 

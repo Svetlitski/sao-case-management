@@ -1,11 +1,9 @@
 from django.db import models
-from django.forms import ModelForm
 from django.utils.text import slugify
 from phonenumber_field.modelfields import PhoneNumberField
 from django.contrib.auth.models import User
 from multiselectfield import MultiSelectField
 from django.core.exceptions import ValidationError
-from django import forms
 
 
 ACADEMIC = 'ACA'
@@ -43,13 +41,16 @@ class Person(models.Model):
         super().save()
 
     def __str__(self):
-        return self.name
+        numopen = self.number_of_active_cases
+        return self.name + ": " + str(numopen) + (" open case" if numopen == 1 else " open cases")
 
+    @property
     def number_of_active_cases(self):
         return len(self.case_set.filter(isOpen=True))
 
     class Meta:
         verbose_name = 'Caseworker'
+        ordering = ['name']
 
 
 class Case(models.Model):
@@ -68,8 +69,8 @@ class Case(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.slug:
-            # TODO: come up with a different slug that will still be unique
-            self.slug = slugify(self.client_SID)
+            # TODO: come up with a different slug that will be unique
+            self.slug = slugify(self.client_name)
         super().save()
 
     def __str__(self):
@@ -80,6 +81,10 @@ class Case(models.Model):
             raise ValidationError(
                 "You must record the client's contact information.")
 
+    def updates(self):
+        # TODO fix this for admin site
+        return [str(update) for update in self.caseupdate_set.all()]
+
 
 class CaseUpdate(models.Model):
     case = models.ForeignKey(
@@ -87,22 +92,9 @@ class CaseUpdate(models.Model):
     creation_date = models.DateTimeField(auto_now_add=True)
     update_description = models.TextField()
 
+    def __str__(self):
+        # TODO: fix this to work properly with the HTML rendering
+        return str(self.creation_date.strftime("%B %d, %Y at %X")) + '\n' + str(self.update_description)
+
     class Meta:
         ordering = ['-creation_date']  # ordered by most recent
-
-
-class CaseUpdateForm(ModelForm):
-    class Meta:
-        model = CaseUpdate
-        fields = ['update_description', 'case']
-        # user does not manually select which case a case update is for
-        labels = {'update_description': ""}
-        widgets = {'case': forms.HiddenInput()}
-
-
-class IntakeForm(ModelForm):
-    class Meta:
-        model = Case
-        fields = ['divisions', 'client_name',
-                  'client_email', 'client_phone', 'client_SID',
-                  'incident_description']
