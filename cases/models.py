@@ -4,6 +4,7 @@ from phonenumber_field.modelfields import PhoneNumberField
 from django.contrib.auth.models import User
 from multiselectfield import MultiSelectField
 from django.core.exceptions import ValidationError
+from django.utils.html import format_html
 
 
 ACADEMIC = 'ACA'
@@ -41,8 +42,8 @@ class Person(models.Model):
         super().save()
 
     def __str__(self):
-        numopen = self.number_of_active_cases
-        return self.name + ": " + str(numopen) + (" open case" if numopen == 1 else " open cases")
+        num_open = self.number_of_active_cases
+        return self.name + ": " + str(num_open) + (" open case" if num_open == 1 else " open cases")
 
     @property
     def number_of_active_cases(self):
@@ -69,8 +70,8 @@ class Case(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.slug:
-            # TODO: come up with a different slug that will be unique
-            self.slug = slugify(self.client_name)
+            # TODO: come up with a better slug that will still be unique
+            self.slug = slugify(self.pk)
         super().save()
 
     def __str__(self):
@@ -82,8 +83,11 @@ class Case(models.Model):
                 "You must record the client's contact information.")
 
     def updates(self):
-        # TODO fix this for admin site
-        return [str(update) for update in self.caseupdate_set.all()]
+        updates_information = ""
+        for update in self.caseupdate_set.all():
+            updates_information += '<p> <b> %s </b> – %s</p>' % (
+                update.creation_date.strftime("%B %d, %Y at %X"), update.update_description)
+        return format_html(updates_information)
 
 
 class CaseUpdate(models.Model):
@@ -94,7 +98,7 @@ class CaseUpdate(models.Model):
 
     def __str__(self):
         # TODO: fix this to work properly with the HTML rendering
-        return str(self.creation_date.strftime("%B %d, %Y at %X")) + '\n' + str(self.update_description)
+        return str(self.creation_date.strftime("%B %d, %Y at %X")) + ' – ' + str(self.update_description)
 
     class Meta:
         ordering = ['-creation_date']  # ordered by most recent
