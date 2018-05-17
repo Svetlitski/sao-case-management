@@ -75,7 +75,7 @@ class Case(models.Model):
         super().save()
 
     def __str__(self):
-        return self.client_name + ", " + self.open_date.__str__() + ", " + self.divisions.__str__()
+        return self.client_name + ", " + str(self.open_date) + ", " + str(self.divisions)
 
     def clean(self):
         if(not (self.client_email or self.client_phone)):
@@ -85,8 +85,9 @@ class Case(models.Model):
     def updates(self):
         updates_information = ""
         for update in self.caseupdate_set.all():
-            updates_information += '<p> <b> %s </b> – %s</p>' % (
-                update.creation_date.strftime("%B %d, %Y at %X"), update.update_description)
+            # Using format_html instead of string substitution in loop in order to sanitize input
+            updates_information += format_html('<p> <b> {} </b> – {} </p>',
+                                               update.creation_date.strftime("%B %d, %Y at %X"), update.update_description)
         return format_html(updates_information)
 
 
@@ -97,7 +98,6 @@ class CaseUpdate(models.Model):
     update_description = models.TextField()
 
     def __str__(self):
-        # TODO: fix this to work properly with the HTML rendering
         return str(self.creation_date.strftime("%B %d, %Y at %X")) + ' – ' + str(self.update_description)
 
     class Meta:
