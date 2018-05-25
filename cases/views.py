@@ -19,7 +19,6 @@ def logout_view(request):
     logout(request)
     return redirect(settings.LOGIN_REDIRECT_URL)
 
-
 # Information on all of one caseworker's cases, viewable only by them
 class CaseListView(LoginRequiredMixin, generic.DetailView):
     model = Person

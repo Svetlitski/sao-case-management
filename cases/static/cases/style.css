@@ -1,5 +1,6 @@
-body {
-	margin: 3%;
+
+main {
+	margin: 0 auto;
 }
 
 #caseworkerList {
@@ -7,8 +8,14 @@ body {
 	text-align: center;
 }
 
+
 #homeH1 {
 	text-align: center;
+}
+
+#btnCases {
+	display: inline;
+	width: 100%;
 }
 
 #logoutBtnDiv {

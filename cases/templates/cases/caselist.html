@@ -8,7 +8,6 @@
 	{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 	{% for case in person.case_set.all %}
 		{% if case.isOpen %}
-		<hr>
 		<h3><a href="{% url 'cases:case_detail' case.slug %}">{{case.client_name}}</a></h3>
 		<ul>
 			<li>Case status: {{ case.isOpen|yesno:"open,closed" }}</li>

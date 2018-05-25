@@ -98,7 +98,7 @@ class CaseUpdate(models.Model):
     update_description = models.TextField()
 
     def __str__(self):
-        return str(self.creation_date.strftime("%B %d, %Y at %X")) + ' – ' + str(self.update_description)
+        return self.creation_date.strftime("%B %d, %Y at %X") + ' – ' + str(self.update_description)
 
     class Meta:
         ordering = ['-creation_date']  # ordered by most recent

@@ -5,19 +5,32 @@
 	{% load static %}
 	{% bootstrap_css %}
 	{% bootstrap_javascript %}
-	<link rel="stylesheet" href="{% static 'cases/style.css' %}" type="text/css" media="screen" />
+	
 	<link rel="shortcut icon" type="image/jpg" href="{% static 'cases/favicon.jpg' %}"/>
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<link rel="stylesheet" href="{% static 'cases/style.css' %}" type="text/css" media="screen" />
 	<title>{% block title %}{% endblock %}</title>
 </head>
 
+<header>
+	{% block header %}
+	<div id="logoutBtnDiv" class="container text-right">
+<a id="logoutBtn" href="{% url 'cases:logout' %}"  class="btn btn-light btn-md d-inline">Log out</a>
+</div>
+	{% endblock %}
+</header>
+
 <body>
+{% comment %}
 {% block logout %}
 <div id="logoutBtnDiv" class="container text-right">
 <a id="logoutBtn" href="{% url 'cases:logout' %}"  class="btn btn-light btn-md d-inline">Log out</a>
 </div>
 {% endblock %}
+{% endcomment %}
+<main>
 {% block body %}
 {% endblock %}
+</main>
 </body>
 </html>
