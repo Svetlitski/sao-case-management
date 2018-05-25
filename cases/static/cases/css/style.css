@@ -1,0 +1,72 @@
+* {
+	font-family: 'Roboto', sans-serif;
+}
+
+
+body  {
+	margin: 3%;
+}
+
+#caseworkerList {
+	list-style-type: none;
+	text-align: center;
+}
+
+
+#homeH1 {
+	text-align: center;
+}
+
+h1,h2,h3,h4,h5 {
+	clear: both;
+}
+
+
+#logoutBtnDiv {
+	float: right;
+	margin-bottom: 2%;
+}
+
+#caseworkerList {
+	padding-left: 0;
+}
+
+.update-card {
+	width: 35%;
+	box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    padding: 1% 1% 0% 1%;
+    margin: 2% 0%;
+}
+
+.case-card {
+	/*background-color: grey;*/
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	width: 30%;
+	box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    padding: 1% 1% 0% 1%;
+    margin: 2% 0%;
+}
+
+.case-card:hover {
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+
+.card-foot {
+	text-align: center;
+	margin: 0% -4%;
+	height: 20px;
+	line-height: 20px;
+	vertical-align: middle;
+	background-color: #D3D3D3;
+}
+
+/*@font-face {
+	font-family: "Roboto";
+	src: url("../fonts/Roboto-Regular.ttf") format("ttf")
+}*/
+
+

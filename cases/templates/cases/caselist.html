@@ -1,22 +1,28 @@
 {% extends "cases/base.html" %}
 {% load bootstrap4 %}
 {% block title %}{{ person.name }}{% endblock %}
-
+{% load static %}
 {% block body %}
 	<h1>{{ person.name }}'s open cases</h1>
 
 	{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 	{% for case in person.case_set.all %}
 		{% if case.isOpen %}
+		<div class="case-card">
 		<h3><a href="{% url 'cases:case_detail' case.slug %}">{{case.client_name}}</a></h3>
-		<ul>
-			<li>Case status: {{ case.isOpen|yesno:"open,closed" }}</li>
-			<li>Date opened: {{ case.open_date }}</li>
-			<li>Phone: {{case.client_phone}}</li>
-			<li>Email: {{case.client_email}}</li>
-			<li>SID: {{case.client_SID}}</li>
-			<li>Description: {{ case.incident_description }}</li>
+		<ul class="fa-ul">
+			{# <li>Case status: {{ case.isOpen|yesno:"open,closed" }}</li> #}
+			<li><i class="fa-li fa fa-calendar"></i>{{ case.open_date }}</li>
+			{% if case.client_phone %} <li><i class="fa-li fa fa-phone"></i>{{case.client_phone}}</li> {% endif %}
+			{% if case.client_email %}<li><i class="fa-li fa fa-envelope"></i>{{case.client_email}}</li> {% endif %}
+			{% if case.client_SID %}<li><i class="fa-li fa fa-id-card"></i>{{case.client_SID}}</li>{% endif %}
 		</ul>
+		<div class="card-foot">
+			<p> <i class="fa fa-clock-o" style="margin-right:10px"></i>
+			{{ case.last_updated|timesince }}</p>
+
+		</div>
+		</div>
 		{% endif %}
 	{% endfor %}
 {% endblock %}

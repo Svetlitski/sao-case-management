@@ -90,6 +90,11 @@ class Case(models.Model):
                                                update.creation_date.strftime("%B %d, %Y at %X"), update.update_description)
         return format_html(updates_information)
 
+    @property   
+    def last_updated(self):
+        update_set = self.caseupdate_set.all()
+        return update_set[0].creation_date if update_set else self.open_date
+
 
 class CaseUpdate(models.Model):
     case = models.ForeignKey(

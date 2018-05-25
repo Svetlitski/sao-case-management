@@ -16,8 +16,10 @@
 </ul>
 
 {% for update in case.caseupdate_set.all %}
+	<div class="update-card">
 	<h4>{{update.creation_date}}</h4>
 	<p>{{update.update_description}}</p>
+</div>
 {% endfor %}
 
 <h5>Add a case update</h5>
