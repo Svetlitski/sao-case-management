@@ -29,7 +29,7 @@ class Person(models.Model):
     name = models.CharField(max_length=30)
     slug = models.SlugField(max_length=30, default="")  # slug is based on name
     account = models.OneToOneField(
-        User, on_delete=models.CASCADE, blank=True, null=True)
+        User, on_delete=models.CASCADE, blank=True, null=True, related_name='caseworker')
 
     def save(self, *args, **kwargs):
         if not self.slug:
@@ -90,10 +90,14 @@ class Case(models.Model):
                                                update.creation_date.strftime("%B %d, %Y at %X"), update.update_description)
         return format_html(updates_information)
 
+    def display_client_phone(self):
+       client_phone_string = str(self.client_phone)
+       return client_phone_string[0:2] + '-' + client_phone_string[2:5] + '-' + client_phone_string[5:8] + '-' + client_phone_string[8:]
+
     @property   
     def last_updated(self):
         update_set = self.caseupdate_set.all()
-        return update_set[0].creation_date if update_set else self.open_date
+        return update_set[0].creation_date if update_set else self.open_date 
 
 
 class CaseUpdate(models.Model):
