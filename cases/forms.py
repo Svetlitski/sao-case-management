@@ -11,7 +11,6 @@ class CaseUpdateForm(ModelForm):
         labels = {'update_description': ""}
         widgets = {'case': forms.HiddenInput()}
 
-
 class IntakeForm(ModelForm):
     class Meta:
         model = Case

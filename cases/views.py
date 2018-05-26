@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
 from django.urls import reverse
 from django.conf import settings
+from django.utils import timezone
 from django.views.generic.edit import FormMixin
 from .models import Person, Case
 from .forms import CaseUpdateForm, IntakeForm
@@ -22,17 +23,20 @@ def logout_view(request):
     return redirect(settings.LOGIN_REDIRECT_URL)
 
 
-# Information on all of one caseworker's cases, viewable only by them
+# Information on all of one caseworker's cases
 class CaseListView(LoginRequiredMixin, generic.DetailView):
     model = Person
     template_name = 'cases/caselist.html'
 
 
+# Overview of all the information and updates for a single case
 class CaseDetailView(LoginRequiredMixin, FormMixin, generic.DetailView):
     model = Case
     template_name = 'cases/casedetail.html'
     form_class = CaseUpdateForm
-    success_url = '/'  # TODO: figure out how to replace this with a call to reverse
+
+    def get_success_url(self):
+        return reverse('cases:case_detail', args=(self.object.pk,))
 
     def get_context_data(self, **kwargs):
         context = super(CaseDetailView, self).get_context_data(**kwargs)
@@ -52,6 +56,18 @@ class CaseDetailView(LoginRequiredMixin, FormMixin, generic.DetailView):
         return super(CaseDetailView, self).form_valid(form)
 
 
+class CaseCloseView(LoginRequiredMixin, generic.edit.UpdateView):
+    model = Case
+    fields = []
+    template_name = 'cases/caseclose.html'
+
+    def form_valid(self, form):
+        self.object.close_date = timezone.now()
+        self.object.isOpen = False
+        self.object.save()
+        return redirect('/')
+
+
 # Case intake form
 class IntakeView(LoginRequiredMixin, generic.FormView):
     template_name = 'cases/intake.html'
@@ -61,6 +77,7 @@ class IntakeView(LoginRequiredMixin, generic.FormView):
     def form_valid(self, form):
         form.save()
         return super().form_valid(form)
+
 
 @login_required
 def home_view(request):

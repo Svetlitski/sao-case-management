@@ -1,13 +1,10 @@
+/* Universal elements */
 * {
 	font-family: 'Roboto', sans-serif;
 }
 
 body  {
 	margin: 0% 3%;
-}
-
-#homeH1 {
-	text-align: center;
 }
 
 h1,h2,h3,h4,h5 {
@@ -54,27 +51,8 @@ header {
 
 }
 
-#updates {
-	width: 46%;
-	margin-right: 8%;
-	margin-bottom: 1%;
-	float: left;
-}
 
-.ui-state-active:focus {
-    outline-width: 0;
-}
-
-#case-description {
-	width: 46%;
-	float: left;
-	color: #ffffff;
-	background-color: grey;
-	box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-	padding: 0% 1% 1%;
-	margin: 1% 0%;
-}
-
+/* Case list view */
 .case-card {
 	cursor: pointer;
 	display: flex;
@@ -102,4 +80,35 @@ header {
 	background-color: #D3D3D3;
 }
 
+
+/* Case detail view */
+#updates {
+	width: 46%;
+	margin-right: 8%;
+	margin-bottom: 1%;
+	float: left;
+}
+
+.ui-accordion-header {
+	outline-width: 0;
+}
+
+#case-description {
+	width: 46%;
+	float: left;
+}
+
+
+/* Case close view */
+#case-close-contents {
+	/*vertical-align: middle;*/
+	width: 100%;
+	text-align:  center;
+	position: fixed;
+	top: 20%;
+}
+
+#case-close-contents > h4 {
+	text-align: center;
+}
 

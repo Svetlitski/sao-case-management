@@ -37,7 +37,7 @@
 	<header>
 		{% block navbar %}
 			<div id="navbar">
-				<img id="logo" width="40px" height ="40px" src="http://advocate.berkeley.edu/wp-content/uploads/2016/08/SAO-Logo-Seal-6.png">
+				<img id="logo" width="40px" height ="40px" src="{% static 'cases/images/sao-logo.png' %}">
 				<a id="logoutBtn" href="{% url 'cases:logout' %}" style="float:right">Log out</a>
 				<a href="{% url 'cases:case_list' request.user.caseworker.slug %}">Cases</a>
 				<a href="{% url 'cases:intake'%}">Intake</a>	
