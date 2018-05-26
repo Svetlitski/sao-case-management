@@ -3,7 +3,7 @@ from . import views
 app_name = 'cases'
 urlpatterns = [
     path('login/', views.OfficeLoginView.as_view(), name='login'),
-    path('', views.HomeView.as_view(), name='home'),
+    path('', views.home_view, name='home'),
     path('logout', views.logout_view, name='logout'),
     path('intake/', views.IntakeView.as_view(), name='intake'),
     path('case/<str:slug>/', views.CaseDetailView.as_view(), name='case_detail'),

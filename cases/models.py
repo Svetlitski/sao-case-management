@@ -91,13 +91,13 @@ class Case(models.Model):
         return format_html(updates_information)
 
     def display_client_phone(self):
-       client_phone_string = str(self.client_phone)
-       return client_phone_string[0:2] + '-' + client_phone_string[2:5] + '-' + client_phone_string[5:8] + '-' + client_phone_string[8:]
+        client_phone_string = str(self.client_phone)
+        return client_phone_string[0:2] + '-' + client_phone_string[2:5] + '-' + client_phone_string[5:8] + '-' + client_phone_string[8:]
 
-    @property   
+    @property
     def last_updated(self):
         update_set = self.caseupdate_set.all()
-        return update_set[0].creation_date if update_set else self.open_date 
+        return update_set[0].creation_date if update_set else self.open_date
 
 
 class CaseUpdate(models.Model):

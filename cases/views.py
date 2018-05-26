@@ -2,7 +2,9 @@ from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
 from django.contrib.auth import logout
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
+from django.urls import reverse
 from django.conf import settings
 from django.views.generic.edit import FormMixin
 from .models import Person, Case
@@ -18,6 +20,7 @@ class OfficeLoginView(LoginView):
 def logout_view(request):
     logout(request)
     return redirect(settings.LOGIN_REDIRECT_URL)
+
 
 # Information on all of one caseworker's cases, viewable only by them
 class CaseListView(LoginRequiredMixin, generic.DetailView):
@@ -59,11 +62,6 @@ class IntakeView(LoginRequiredMixin, generic.FormView):
         form.save()
         return super().form_valid(form)
 
-
-# Home page reached after login
-class HomeView(LoginRequiredMixin, generic.ListView):
-    template_name = 'cases/home.html'
-    context_object_name = 'caseworker'
-
-    def get_queryset(self):
-        return Person.objects.get(account=self.request.user)
+@login_required
+def home_view(request):
+    return redirect(reverse('cases:case_list', args=(request.user.caseworker.slug,)))
