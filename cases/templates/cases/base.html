@@ -5,12 +5,33 @@
 		{% load static %}
 		{% bootstrap_css %}
 		{% bootstrap_javascript %}
-		
+		{% block head %}{% endblock %}
 		<link rel="shortcut icon" type="image/jpg" href="{% static 'cases/images/favicon.jpg' %}"/>
-		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-		<link rel="stylesheet" href="{% static 'cases/css/style.css' %}" type="text/css" media="screen" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">	
 		<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+		<link rel="stylesheet" href="{% static 'cases/css/style.css' %}" type="text/css" media="screen" />
+
+		<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+		<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+		<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+			<script type="text/javascript">
+	$(function(){
+		$page = window.location.pathname;
+		if(!$page) {
+			$page = 'index.html';
+		}
+		$("#navbar a").each(function(){
+			var $href = $(this).attr('href');
+			if ( ($href == $page) || ($href == '') ) {
+				$(this).addClass('is_current_page');
+			} else {
+				$(this).removeClass('is_current_page');
+			}
+		});
+	});
+	</script>
+		
 		<title>{% block title %}{% endblock %}</title>
 	</head>
 	<header>
