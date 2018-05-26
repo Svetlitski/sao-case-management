@@ -1,15 +1,14 @@
 {% extends "cases/base.html" %}
 {% load bootstrap4 %}
 {% block title %}Intake form{% endblock %}
-
 {% block body %}
 	<h1>Intake form</h1>
 	<form role="form" action="" method="post">
 		{% csrf_token %}
 		{% bootstrap_form form %}
 		{% buttons %}
-			<button id =type="submit" class="btn btn-primary">Submit</button>
-			<button type="reset" class = "btn btn-secondary">Reset form</button>
-		{% endbuttons %}
-	</form>
+		<button id =type="submit" class="btn btn-primary">Submit</button>
+		<button type="reset" class = "btn btn-secondary">Reset form</button>
+	{% endbuttons %}
+</form>
 {% endblock %}

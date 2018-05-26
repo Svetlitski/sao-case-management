@@ -1,48 +1,35 @@
 <!doctype html>
 <html lang="en">
-<head> 
-	{% load bootstrap4 %}
-	{% load static %}
-	{% bootstrap_css %}
-	{% bootstrap_javascript %}
-	
-	<link rel="shortcut icon" type="image/jpg" href="{% static 'cases/images/favicon.jpg' %}"/>
-	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<link rel="stylesheet" href="{% static 'cases/css/style.css' %}" type="text/css" media="screen" />
-	<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-	<title>{% block title %}{% endblock %}</title>
-</head>
-
-<header>
-	{% block navbar %}
-	<div id="navbar">
-	<img id="logo" width="40px" height ="40px" src="http://advocate.berkeley.edu/wp-content/uploads/2016/08/SAO-Logo-Seal-6.png">
-	<a id="logoutBtn" href="{% url 'cases:logout' %}" style="float:right">Log out</a>
-	<a href="{% url 'cases:case_list' request.user.caseworker.slug %}">Cases</a>
-	<a href="{% url 'cases:intake'%}">Intake</a>
-	
-	</div>
-	{% endblock %}
-
-
-	{% block header %}
-	
-
-	{% endblock %}
-</header>
-
-<body>
-{% comment %}
-{% block logout %}
-<div id="logoutBtnDiv" class="container text-right">
-<a id="logoutBtn" href="{% url 'cases:logout' %}"  class="btn btn-light btn-md d-inline">Log out</a>
-</div>
-{% endblock %}
-{% endcomment %}
-<main>
-{% block body %}
-{% endblock %}
-</main>
-</body>
+	<head>
+		{% load bootstrap4 %}
+		{% load static %}
+		{% bootstrap_css %}
+		{% bootstrap_javascript %}
+		
+		<link rel="shortcut icon" type="image/jpg" href="{% static 'cases/images/favicon.jpg' %}"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<link rel="stylesheet" href="{% static 'cases/css/style.css' %}" type="text/css" media="screen" />
+		<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+		<title>{% block title %}{% endblock %}</title>
+	</head>
+	<header>
+		{% block navbar %}
+			<div id="navbar">
+				<img id="logo" width="40px" height ="40px" src="http://advocate.berkeley.edu/wp-content/uploads/2016/08/SAO-Logo-Seal-6.png">
+				<a id="logoutBtn" href="{% url 'cases:logout' %}" style="float:right">Log out</a>
+				<a href="{% url 'cases:case_list' request.user.caseworker.slug %}">Cases</a>
+				<a href="{% url 'cases:intake'%}">Intake</a>	
+			</div>
+		{% endblock %}
+		
+		{% block header %}		
+		{% endblock %}
+	</header>
+	<body>
+		<main>
+			{% block body %}
+			{% endblock %}
+		</main>
+	</body>
 </html>
