@@ -28,10 +28,10 @@ class DivisionsListFilter(admin.SimpleListFilter):
 class CaseAdmin(admin.ModelAdmin):
     fields = ['divisions', 'caseworkers', 'client_name',
               'client_email', 'client_phone', 'client_SID',
-              'incident_description', 'isOpen', 'close_date', 'updates']
+              'incident_description', 'is_open', 'close_date', 'updates']
     readonly_fields = ['updates']
     list_display = ('get_divisions_display',
-                    'open_date', 'client_name', 'isOpen')
-    list_filter = ['open_date', 'isOpen', DivisionsListFilter]
+                    'open_date', 'client_name', 'is_open')
+    list_filter = ['open_date', 'is_open', DivisionsListFilter]
     search_fields = ['incident_description']
     autocomplete_fields = ['caseworkers']

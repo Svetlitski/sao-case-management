@@ -19,7 +19,7 @@ class OfficeLoginView(LoginView):
 
 # Used for logout button, simply redirects to login page
 def logout_view(request):
-    logout(request)
+    ogout(request)
     return redirect(settings.LOGIN_REDIRECT_URL)
 
 
@@ -66,7 +66,7 @@ class CaseOpenCloseView(LoginRequiredMixin, generic.edit.UpdateView):
             self.object.close_date = None
         else:  # Closing a case
             self.object.close_date = timezone.now()
-        self.object.isOpen = not self.object.isOpen
+        self.object.is_open = not self.object.is_open
         self.object.save()
         return redirect('/')
 

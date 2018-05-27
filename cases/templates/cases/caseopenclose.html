@@ -1,19 +1,12 @@
-{% extends "cases/base.html" %}
-{% load bootstrap4 %}
-
+{% extends "cases/base.html" %} 
+{% load bootstrap4 %} 
 {% block body %}
-<div id="case-close-contents">
-	<h1>Are you sure you want to {{ case.isOpen|yesno:"close,reopen" }} this case?</h1>
-		<form role="form" action="" method="post">
-		{% csrf_token %}
-		{% bootstrap_form form %}
-		{% buttons %}
-		<button id =type="submit" class="btn btn-{{ case.isOpen|yesno:'danger,success' }}">I'm sure, {{ case.isOpen|yesno:'close,reopen' }} the case</button>
-		<a class = "btn btn-secondary" href="{{ request.GET.next }}">Cancel</a>
-	{% endbuttons %}
-</form>
-
-
-
-
+  <div id="case-close-contents">
+    <h1>Are you sure you want to {{ case.is_open|yesno:"close,reopen" }} this case?</h1>
+    <form role="form" action="" method="post">
+      {% csrf_token %} {% bootstrap_form form %} {% buttons %}
+      <button id=type="submit" class="btn btn-{{ case.is_open|yesno:'danger,success' }}">I'm sure, {{ case.is_open|yesno:'close,reopen' }} the case</button>
+      <a class="btn btn-secondary" href="{{ request.GET.next }}">Cancel</a> {% endbuttons %}
+    </form>
+  </div>
 {% endblock %}

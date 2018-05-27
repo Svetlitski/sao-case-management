@@ -1,65 +1,56 @@
-{% extends "cases/base.html" %}
-{% load bootstrap4 %}
-{% block title %}Current cases{% endblock %}
-{% load static %}
+{% extends "cases/base.html" %} 
+{% load bootstrap4 %} {% load static %} 
+{% block title %}Current cases{% endblock %} 
 {% block head %}
-	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/base/jquery-ui.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 	<script type="text/javascript">
-	$(function (){
-		$('#showAllCasesToggle').click(function () {
-			 if(!$(this).data('clicked')) {
-				$(this).data('clicked', true);
-				$(this).text('Show only open cases');
-				$('#case-list-page-title').text('All cases');
-				$('.closed-case').each(function () {
-					$(this).addClass('closed-case-visible');
-					$(this)[0].onclick = null;
-					$(this).off('click')
-					$(this).on('click', function (e) {
-						if(confirm("This case is closed. You may view it, but you cannot make any changes or additions to the case record without reopening the case.")) {
-							location.href=$(this).attr("href");	
-						} else {
-							e.preventDefault();
-						}		
-					});	
-			});
-			  } else {
-				$(this).data('clicked', false);
-				$(this).text('Show all cases');
-				$('#case-list-page-title').text('Open cases')
-				$('.closed-case').each(function () {$(this).removeClass("closed-case-visible")});
-			 }
-			
-		// }); 
-		//}
-	});
+	$(function() {
+	    $('#show-all-cases-toggle').click(function() {
+	        if (!$(this).data('clicked')) {
+	            $(this).data('clicked', true);
+	            $(this).text('Show only open cases');
+	            $('#case-list-page-title').text('All cases');
+	            $('.closed-case').each(function() {
+	                $(this).addClass('closed-case-visible');
+	                $(this)[0].onclick = null;
+	                $(this).off('click')
+	                $(this).on('click', function(e) {
+	                    if (confirm("This case is closed. You may view it, but you cannot make any changes or additions to the case record without reopening the case.")) {
+	                        location.href = $(this).attr("href");
+	                    } else {
+	                        e.preventDefault();
+	                    }
+	                });
+	            });
+	        } else {
+	            $(this).data('clicked', false);
+	            $(this).text('Show all cases');
+	            $('#case-list-page-title').text('Open cases')
+	            $('.closed-case').each(function() { $(this).removeClass("closed-case-visible") });
+	        }
+	    });
 	});
 	</script>
-
-
-{% endblock %}
-
+{% endblock %} 
 {% block body %}
-	<button id="showAllCasesToggle" type="button" class="btn btn-md btn-light">Show all cases</button>
-	<h1 id="case-list-page-title" style="clear:left">Open cases</h1>
-	{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+	<button id="show-all-cases-toggle" type="button" class="btn btn-md btn-light" style="float:right">Show all cases</button>
+	<h1 id="case-list-page-title" style="clear:left">Open cases</h1> {% if error_message %}
+	<p><strong>{{ error_message }}</strong></p>{% endif %} 
 	{% for case in person.case_set.all %}
-		{# {% if case.isOpen %} #}
-			<div class="case-card{{case.isOpen|yesno:', closed-case'}}" href="{% url 'cases:case_detail' case.slug %}" onclick="location.href='{% url 'cases:case_detail' case.slug %}';">
-				<h3>{{case.client_name}}</h3>
-				<ul class="fa-ul">
-					<li title="Date case was opened"><i class="fa-li fa fa-calendar"></i>{{ case.open_date }}</li>
-					{% if case.client_phone %} <li title="Phone number"><i class="fa-li fa fa-phone"></i>{{case.display_client_phone}}</li> {% endif %}
-					{% if case.client_email %}<li title="Email"><i class="fa-li fa fa-envelope"></i><a href="mailto:{{case.client_email}}">{{case.client_email}}</a></li> {% endif %}
-					{% if case.client_SID %}<li title="Student ID"><i class="fa-li fa fa-id-card"></i>{{case.client_SID}}</li>{% endif %}
-				</ul>
-				<div class="card-foot">
-					<p title="Last updated {{ case.last_updated|timesince }} ago"><i class="fa fa-clock-o" style="margin-right:10px"></i>
-					{{ case.last_updated|timesince }}</p>
-				</div>
-			</div>
-		{# {% endif %} #}
-	{% endfor %}
+		<div class="case-card{{case.is_open|yesno:', closed-case'}}" href="{% url 'cases:case_detail' case.slug %}" onclick="location.href='{% url 'cases:case_detail' case.slug %}';">
+		  <h3>{{case.client_name}}</h3>
+		  <ul class="fa-ul">
+		    <li title="Date case was opened"><i class="fa-li fa fa-calendar"></i>{{ case.open_date }}</li>
+		    {% if case.client_phone %}
+		    <li title="Phone number"><i class="fa-li fa fa-phone"></i>{{case.display_client_phone}}</li> {% endif %} {% if case.client_email %}
+		    <li title="Email"><i class="fa-li fa fa-envelope"></i><a href="mailto:{{case.client_email}}">{{case.client_email}}</a></li> {% endif %} {% if case.client_SID %}
+		    <li title="Student ID"><i class="fa-li fa fa-id-card"></i>{{case.client_SID}}</li>{% endif %}
+		  </ul>
+		  <div class="card-foot">
+		    <p title="Last updated {{ case.last_updated|timesince }} ago"><i class="fa fa-clock-o" style="margin-right:10px"></i> {{ case.last_updated|timesince }}</p>
+		  </div>
+		</div>
+	{% endfor %} 
 {% endblock %}

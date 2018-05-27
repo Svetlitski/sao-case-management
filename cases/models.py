@@ -47,7 +47,7 @@ class Person(models.Model):
 
     @property
     def number_of_active_cases(self):
-        return len(self.case_set.filter(isOpen=True))
+        return len(self.case_set.filter(is_open=True))
 
     class Meta:
         verbose_name = 'Caseworker'
@@ -65,7 +65,7 @@ class Case(models.Model):
         'date case was closed', blank=True, null=True)
     caseworkers = models.ManyToManyField(Person, blank=True)
     divisions = MultiSelectField(choices=DIVISION_CHOICES)
-    isOpen = models.BooleanField('case open?', default=True)
+    is_open = models.BooleanField('case open?', default=True)
     last_updated = models.DateTimeField('time since last update', auto_now_add=True)
     slug = models.SlugField(max_length=30, blank=True)
 

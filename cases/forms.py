@@ -1,7 +1,6 @@
 from django.forms import ModelForm
 from django import forms
 from .models import Case, CaseUpdate
-from django.utils import timezone
 
 
 class CaseUpdateForm(ModelForm):

@@ -1,136 +1,145 @@
 /* Universal elements */
+
 * {
-	font-family: 'Roboto', sans-serif;
+    font-family: 'Roboto', sans-serif;
 }
 
-body  {
-	margin: 0% 3%;
+body {
+    margin: 0% 3%;
 }
 
-h1,h2,h3,h4,h5 {
-	clear: both;
+h1,
+h2,
+h3,
+h4,
+h5 {
+    clear: both;
 }
 
 header {
-	height: 50px;
-	overflow: auto;
-	margin: 0% -4% 1%;
-	border-bottom: 1px solid #e0e0e0;
+    height: 50px;
+    overflow: auto;
+    margin: 0% -4% 1%;
+    border-bottom: 1px solid #e0e0e0;
 }
 
 #navbar {
-	padding: 0px 12px;
-	text-align: center;
-	vertical-align: middle;
+    padding: 0px 12px;
+    text-align: center;
+    vertical-align: middle;
 }
 
 #logo {
-	float: left;
-	vertical-align: middle;
-	position: relative;
-	top: 3px;
-	margin-right: 5px;
+    float: left;
+    vertical-align: middle;
+    position: relative;
+    top: 3px;
+    margin-right: 5px;
 }
 
-#navbar > a { 
-	padding: 15px 15px 8px 15px;
-	border-bottom: 2px solid transparent;
-	text-align: center;
-	float:left;
-	vertical-align: middle;
-	background-color: transparent;
-	transition: 0.15s;
+#navbar>a {
+    padding: 15px 15px 8px 15px;
+    border-bottom: 2px solid transparent;
+    text-align: center;
+    float: left;
+    vertical-align: middle;
+    background-color: transparent;
+    transition: 0.15s;
 }
 
-#navbar > a:hover {
-	background-color: #c3c3c3;
+#navbar>a:hover {
+    background-color: #c3c3c3;
 }
 
-#navbar > a.is_current_page {
-	border-bottom: 2px solid rgb(234,192, 74);
-
+#navbar>a.is_current_page {
+    border-bottom: 2px solid rgb(234, 192, 74);
 }
+
 
 
 /* Case list view */
+
 .case-card {
-	cursor: pointer;
-	display: flex;
-	word-wrap: break-word;
-	flex-direction: column;
-	justify-content: space-between;
-	width: 30%;
-	box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    cursor: pointer;
+    display: flex;
+    word-wrap: break-word;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 30%;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
     transition: 0.3s;
     padding: 1% 1% 0% 1%;
     margin: 2% 0%;
 }
 
 .case-card:hover {
-    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
 }
 
 .card-foot {
-	text-align: center;
-	word-wrap: inherit;
-	margin: 0% -4%;
-	height: 20px;
-	line-height: 20px;
-	vertical-align: middle;
-	background-color: #D3D3D3;
+    text-align: center;
+    word-wrap: inherit;
+    margin: 0% -4%;
+    height: 20px;
+    line-height: 20px;
+    vertical-align: middle;
+    background-color: #d3d3d3;
 }
 
-#showAllCasesToggle {
-	float: right;
+#show-all-cases-toggle {
+    float: right;
 }
 
 .closed-case {
-	display: none;
+    display: none;
 }
 
 .closed-case-visible {
-	display: block;
-	background-color: #d3d3d3;
-	cursor: not-allowed;
+    display: block;
+    background-color: #d3d3d3;
+    cursor: not-allowed;
 }
 
 .closed-case-visible:hover {
-	box-shadow: 0px 4px 8px 0 rgba(0,0,0,0.2);
+    box-shadow: 0px 4px 8px 0 rgba(0, 0, 0, 0.2);
 }
 
-.closed-case-visible > div {
-	margin: 0%;
+.closed-case-visible>div {
+    margin: 0%;
 }
+
 
 
 /* Case detail view */
+
 #updates {
-	width: 46%;
-	margin-right: 8%;
-	margin-bottom: 1%;
-	float: left;
+    width: 46%;
+    margin-right: 8%;
+    margin-bottom: 1%;
+    float: left;
 }
 
 .ui-accordion-header {
-	outline-width: 0;
+    outline-width: 0;
 }
 
 #case-description {
-	width: 46%;
-	float: left;
+    width: 46%;
+    float: left;
 }
+
 
 
 /* Case close view */
+
 #case-close-contents {
-	/*vertical-align: middle;*/
-	width: 100%;
-	text-align:  center;
-	position: fixed;
-	top: 20%;
+    /*vertical-align: middle;*/
+    width: 100%;
+    text-align: center;
+    position: fixed;
+    top: 20%;
 }
 
-#case-close-contents > h4 {
-	text-align: center;
+#case-close-contents>h4 {
+    text-align: center;
 }
-
