@@ -80,6 +80,28 @@ header {
 	background-color: #D3D3D3;
 }
 
+#showAllCasesToggle {
+	float: right;
+}
+
+.closed-case {
+	display: none;
+}
+
+.closed-case-visible {
+	display: block;
+	background-color: #d3d3d3;
+	cursor: not-allowed;
+}
+
+.closed-case-visible:hover {
+	box-shadow: 0px 4px 8px 0 rgba(0,0,0,0.2);
+}
+
+.closed-case-visible > div {
+	margin: 0%;
+}
+
 
 /* Case detail view */
 #updates {

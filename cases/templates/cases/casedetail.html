@@ -17,8 +17,8 @@
 {% block title %}{{case.client_name}}{% endblock %}
 
 {% block body %}
-	<a href="{% url 'cases:case_close' case.slug %}?next={{request.path|urlencode}}" class="btn btn-sm btn-danger" style="float:right">Close case</a>
-	<h3 style="clear:left">{{case.client_name}} [{{case.divisions}}]</h3>
+	<a href="{% url 'cases:case_open_close' case.slug %}?next={{request.path|urlencode}}" class="btn btn-sm {{case.isOpen|yesno:'btn-danger,btn-success'}}" style="float:right">{{case.isOpen|yesno:'Close,Reopen'}} case</a>
+	<h3 style="clear:left">{{case.client_name}} [{{case.divisions}}]{% if not case.isOpen %}, closed on {{case.close_date}}{% endif %}</h3>
 	<p> {% if case.client_phone %} <i class="fa fa-phone"></i> {{case.display_client_phone}}{% endif %}
 		{% if case.client_email %} {{case.client_phone|yesno:" | ,"}} <i class="fa fa-envelope"></i><a href="mailto:{{case.client_email}}"> 
 		  {{case.client_email}}</a>{% endif %}
@@ -44,11 +44,12 @@
 		<p>{{ case.incident_description }}</p>
 	</div>
 
-
+	{% if case.isOpen %}
 	<h5>Add a case update</h5>
 	<form role="form" action="" method="post">
 		{% csrf_token %}
 		{% bootstrap_form form %}
 		{% bootstrap_button "Save update" button_type="submit" button_class="btn-primary" %}
 	</form>
+	{% endif %}
 {% endblock %}

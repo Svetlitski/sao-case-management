@@ -66,6 +66,7 @@ class Case(models.Model):
     caseworkers = models.ManyToManyField(Person, blank=True)
     divisions = MultiSelectField(choices=DIVISION_CHOICES)
     isOpen = models.BooleanField('case open?', default=True)
+    last_updated = models.DateTimeField('time since last update', auto_now_add=True)
     slug = models.SlugField(max_length=30, blank=True)
 
     def save(self, *args, **kwargs):
@@ -94,10 +95,8 @@ class Case(models.Model):
         client_phone_string = str(self.client_phone)
         return client_phone_string[0:2] + '-' + client_phone_string[2:5] + '-' + client_phone_string[5:8] + '-' + client_phone_string[8:]
 
-    @property
-    def last_updated(self):
-        update_set = self.caseupdate_set.all()
-        return update_set[0].creation_date if update_set else self.open_date
+    class Meta:
+        ordering = ['-last_updated']
 
 
 class CaseUpdate(models.Model):

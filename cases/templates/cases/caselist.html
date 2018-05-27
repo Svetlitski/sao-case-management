@@ -1,13 +1,53 @@
 {% extends "cases/base.html" %}
 {% load bootstrap4 %}
-{% block title %}{{ person.name }}{% endblock %}
+{% block title %}Current cases{% endblock %}
 {% load static %}
+{% block head %}
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	<script type="text/javascript">
+	$(function (){
+		$('#showAllCasesToggle').click(function () {
+			 if(!$(this).data('clicked')) {
+				$(this).data('clicked', true);
+				$(this).text('Show only open cases');
+				$('#case-list-page-title').text('All cases');
+				$('.closed-case').each(function () {
+					$(this).addClass('closed-case-visible');
+					$(this)[0].onclick = null;
+					$(this).off('click')
+					$(this).on('click', function (e) {
+						if(confirm("This case is closed. You may view it, but you cannot make any changes or additions to the case record without reopening the case.")) {
+							location.href=$(this).attr("href");	
+						} else {
+							e.preventDefault();
+						}		
+					});	
+			});
+			  } else {
+				$(this).data('clicked', false);
+				$(this).text('Show all cases');
+				$('#case-list-page-title').text('Open cases')
+				$('.closed-case').each(function () {$(this).removeClass("closed-case-visible")});
+			 }
+			
+		// }); 
+		//}
+	});
+	});
+	</script>
+
+
+{% endblock %}
+
 {% block body %}
-	<h1>Open cases</h1>
+	<button id="showAllCasesToggle" type="button" class="btn btn-md btn-light">Show all cases</button>
+	<h1 id="case-list-page-title" style="clear:left">Open cases</h1>
 	{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 	{% for case in person.case_set.all %}
-		{% if case.isOpen %}
-			<div class="case-card" onclick="location.href='{% url 'cases:case_detail' case.slug %}';">
+		{# {% if case.isOpen %} #}
+			<div class="case-card{{case.isOpen|yesno:', closed-case'}}" href="{% url 'cases:case_detail' case.slug %}" onclick="location.href='{% url 'cases:case_detail' case.slug %}';">
 				<h3>{{case.client_name}}</h3>
 				<ul class="fa-ul">
 					<li title="Date case was opened"><i class="fa-li fa fa-calendar"></i>{{ case.open_date }}</li>
@@ -20,6 +60,6 @@
 					{{ case.last_updated|timesince }}</p>
 				</div>
 			</div>
-		{% endif %}
+		{# {% endif %} #}
 	{% endfor %}
 {% endblock %}

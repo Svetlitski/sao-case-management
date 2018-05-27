@@ -56,14 +56,17 @@ class CaseDetailView(LoginRequiredMixin, FormMixin, generic.DetailView):
         return super(CaseDetailView, self).form_valid(form)
 
 
-class CaseCloseView(LoginRequiredMixin, generic.edit.UpdateView):
+class CaseOpenCloseView(LoginRequiredMixin, generic.edit.UpdateView):
     model = Case
     fields = []
-    template_name = 'cases/caseclose.html'
+    template_name = 'cases/caseopenclose.html'
 
     def form_valid(self, form):
-        self.object.close_date = timezone.now()
-        self.object.isOpen = False
+        if self.object.close_date:  # Reopening a case
+            self.object.close_date = None
+        else:  # Closing a case
+            self.object.close_date = timezone.now()
+        self.object.isOpen = not self.object.isOpen
         self.object.save()
         return redirect('/')
 
