@@ -1,11 +1,13 @@
 from .models import Case, Person, DIVISION_CHOICES
 from django.contrib import admin
+
+
 admin.AdminSite.site_header = "SAO Case Administration"
 
 
 @admin.register(Person)
 class PersonAdmin(admin.ModelAdmin):
-    fields = ['name', 'division']
+    fields = ['name', 'division', 'account']
     list_display = ('name', 'division', 'number_of_active_cases')
     list_filter = ['division']
     search_fields = ['name']

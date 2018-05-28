@@ -34,11 +34,6 @@ class Person(models.Model):
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(self.name)
-        if not self.account:
-            myUser = User.objects.create_user(
-                self.name, self.name + "@berkeleysao.org", "default")
-            myUser.save()
-            self.account = myUser
         super().save()
 
     def __str__(self):
@@ -96,7 +91,7 @@ class Case(models.Model):
         return client_phone_string[0:2] + '-' + client_phone_string[2:5] + '-' + client_phone_string[5:8] + '-' + client_phone_string[8:]
 
     class Meta:
-        ordering = ['-last_updated']
+        ordering = ['-last_updated']  # ordered by most recent
 
 
 class CaseUpdate(models.Model):
