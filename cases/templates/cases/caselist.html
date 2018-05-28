@@ -38,19 +38,23 @@
 	<button id="show-all-cases-toggle" type="button" class="btn btn-md btn-light" style="float:right">Show all cases</button>
 	<h1 id="case-list-page-title" style="clear:left">Open cases</h1> {% if error_message %}
 	<p><strong>{{ error_message }}</strong></p>{% endif %} 
+	<div id="case-list">
 	{% for case in person.case_set.all %}
 		<div class="case-card{{case.is_open|yesno:', closed-case'}}" href="{% url 'cases:case_detail' case.slug %}" onclick="location.href='{% url 'cases:case_detail' case.slug %}';">
-		  <h3>{{case.client_name}}</h3>
-		  <ul class="fa-ul">
-		    <li title="Date case was opened"><i class="fa-li fa fa-calendar"></i>{{ case.open_date }}</li>
-		    {% if case.client_phone %}
-		    <li title="Phone number"><i class="fa-li fa fa-phone"></i>{{case.display_client_phone}}</li> {% endif %} {% if case.client_email %}
-		    <li title="Email"><i class="fa-li fa fa-envelope"></i><a href="mailto:{{case.client_email}}">{{case.client_email}}</a></li> {% endif %} {% if case.client_SID %}
-		    <li title="Student ID"><i class="fa-li fa fa-id-card"></i>{{case.client_SID}}</li>{% endif %}
-		  </ul>
+			<div class="case-card-contents">
+			  <h3>{{case.client_name}}</h3>
+			  <ul class="fa-ul">
+			    <li title="Date case was opened"><i class="fa-li fa fa-calendar"></i>{{ case.open_date }}</li>
+			    {% if case.client_phone %}
+			    <li title="Phone number"><i class="fa-li fa fa-phone"></i>{{case.display_client_phone}}</li> {% endif %} {% if case.client_email %}
+			    <li title="Email"><i class="fa-li fa fa-envelope"></i><a href="mailto:{{case.client_email}}">{{case.client_email}}</a></li> {% endif %} {% if case.client_SID %}
+			    <li title="Student ID"><i class="fa-li fa fa-id-card"></i>{{case.client_SID}}</li>{% endif %}
+			  </ul>
+			</div>
 		  <div class="card-foot">
 		    <p title="Last updated {{ case.last_updated|timesince }} ago"><i class="fa fa-clock-o" style="margin-right:10px"></i> {{ case.last_updated|timesince }}</p>
 		  </div>
 		</div>
+	</div>
 	{% endfor %} 
 {% endblock %}

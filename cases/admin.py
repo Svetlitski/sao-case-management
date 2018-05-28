@@ -1,5 +1,6 @@
 from .models import Case, Person, DIVISION_CHOICES
 from django.contrib import admin
+from django.utils import timezone
 
 
 admin.AdminSite.site_header = "SAO Case Administration"
@@ -26,6 +27,18 @@ class DivisionsListFilter(admin.SimpleListFilter):
         return queryset.filter(divisions__contains=self.value())
 
 
+def close_cases(modeladmin, request, queryset):
+    queryset.update(is_open=False, close_date=timezone.now())
+
+
+def reopen_cases(modeladmin, request, queryset):
+    queryset.update(is_open=True, close_date=None)
+
+
+close_cases.short_description = "Close selected cases"
+reopen_cases.short_description = "Reopen selected cases"
+
+
 @admin.register(Case)
 class CaseAdmin(admin.ModelAdmin):
     fields = ['divisions', 'caseworkers', 'client_name',
@@ -37,3 +50,4 @@ class CaseAdmin(admin.ModelAdmin):
     list_filter = ['open_date', 'is_open', DivisionsListFilter]
     search_fields = ['incident_description']
     autocomplete_fields = ['caseworkers']
+    actions = [close_cases, reopen_cases]
