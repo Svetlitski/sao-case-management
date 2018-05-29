@@ -19,7 +19,7 @@ class OfficeLoginView(LoginView):
 
 # Used for logout button, simply redirects to login page
 def logout_view(request):
-    ogout(request)
+    logout(request)
     return redirect(settings.LOGIN_REDIRECT_URL)
 
 

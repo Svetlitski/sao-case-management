@@ -38,7 +38,7 @@
 	<button id="show-all-cases-toggle" type="button" class="btn btn-md btn-light" style="float:right">Show all cases</button>
 	<h1 id="case-list-page-title" style="clear:left">Open cases</h1> {% if error_message %}
 	<p><strong>{{ error_message }}</strong></p>{% endif %} 
-	<div id="case-list">
+	<div id="case-list" class="clearfix">
 	{% for case in person.case_set.all %}
 		<div class="case-card{{case.is_open|yesno:', closed-case'}}" href="{% url 'cases:case_detail' case.slug %}" onclick="location.href='{% url 'cases:case_detail' case.slug %}';">
 			<div class="case-card-contents">
@@ -55,6 +55,6 @@
 		    <p title="Last updated {{ case.last_updated|timesince }} ago"><i class="fa fa-clock-o" style="margin-right:10px"></i> {{ case.last_updated|timesince }}</p>
 		  </div>
 		</div>
-	</div>
 	{% endfor %} 
+	</div>
 {% endblock %}
