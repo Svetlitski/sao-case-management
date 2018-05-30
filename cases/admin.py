@@ -6,12 +6,20 @@ from django.utils import timezone
 admin.AdminSite.site_header = "SAO Case Administration"
 
 
+class CasesInline(admin.TabularInline):
+    model = Case.caseworkers.through
+    extra = 0
+    verbose_name = 'case'
+    verbose_name_plural = 'cases'
+
 @admin.register(Person)
 class PersonAdmin(admin.ModelAdmin):
+    # Todo: display open cases associated with caseworker, either as inlines or read-only overviews
     fields = ['name', 'division', 'account']
     list_display = ('name', 'division', 'number_of_active_cases')
     list_filter = ['division']
     search_fields = ['name']
+    inlines = [CasesInline]
 
 
 class DivisionsListFilter(admin.SimpleListFilter):
