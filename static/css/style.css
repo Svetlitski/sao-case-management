@@ -35,7 +35,7 @@ header {
     z-index: 1;
     text-align: center;
     vertical-align: middle;
-    background-color: rgb(250,250,251);
+    background-color: rgb(250, 250, 251);
     border-bottom: 1px solid #e0e0e0;
 }
 
@@ -67,6 +67,8 @@ header {
 }
 
 
+/* Case app */
+
 
 /* Case list view */
 
@@ -80,9 +82,9 @@ header {
 }
 
 .clearfix:after {
-  content: "";
-  display: table; 
-  clear: both; 
+    content: "";
+    display: table;
+    clear: both;
 }
 
 
@@ -144,7 +146,10 @@ header {
 
 
 
+
 /* Case detail view */
+
+
 /* TODO: configure to use flexbox */
 
 #updates {

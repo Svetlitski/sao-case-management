@@ -1,32 +1,22 @@
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.views import LoginView
-from django.contrib.auth import logout
-from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
 from django.urls import reverse
-from django.conf import settings
 from django.utils import timezone
 from django.views.generic.edit import FormMixin
-from .models import Person, Case
+from .models import Case
 from .forms import CaseUpdateForm, IntakeForm
 
 
-# Caseworker login page
-class OfficeLoginView(LoginView):
-    template_name = 'cases/login.html'
-
-
-# Used for logout button, simply redirects to login page
-def logout_view(request):
-    logout(request)
-    return redirect(settings.LOGIN_REDIRECT_URL)
-
-
 # Information on all of one caseworker's cases
-class CaseListView(LoginRequiredMixin, generic.DetailView):
-    model = Person
+class CaseListView(LoginRequiredMixin, generic.ListView):
+    model = Case
     template_name = 'cases/caselist.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['case_list'] = self.request.user.caseworker.case_set.all()
+        return context
 
 
 # Overview of all the information and updates for a single case
@@ -80,8 +70,3 @@ class IntakeView(LoginRequiredMixin, generic.FormView):
     def form_valid(self, form):
         form.save()
         return super().form_valid(form)
-
-
-@login_required
-def home_view(request):
-    return redirect(reverse('cases:case_list', args=(request.user.caseworker.slug,)))

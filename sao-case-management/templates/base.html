@@ -6,11 +6,11 @@
   {% load bootstrap4 %} {% load static %} {% bootstrap_css %} 
   {% bootstrap_javascript %} 
   {% block head %}{% endblock %}
-  <link rel="shortcut icon" type="image/jpg" href="{% static 'cases/images/favicon.jpg' %}" />
+  <link rel="shortcut icon" type="image/jpg" href="{% static 'images/favicon.jpg' %}" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  <link rel="stylesheet" href="{% static 'cases/css/style.css' %}" type="text/css" media="screen" />
+  <link rel="stylesheet" href="{% static 'css/style.css' %}" type="text/css" media="screen" />
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/base/jquery-ui.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
@@ -35,9 +35,9 @@
 <header>
   {% block navbar %}
   <div id="navbar">
-    <img id="logo" width="40px" height="40px" src="{% static 'cases/images/sao-logo.png' %}">
-    <a id="logout-btn" href="{% url 'cases:logout' %}" style="float:right">Log out</a>
-    <a href="{% url 'cases:case_list' request.user.caseworker.slug %}">Cases</a>
+    <img id="logo" width="40px" height="40px" src="{% static 'images/sao-logo.png' %}">
+    <a id="logout-btn" href="{% url 'logout' %}" style="float:right">Log out</a>
+    <a href="{% url 'cases:case_list' %}">Cases</a>
     <a href="{% url 'cases:intake'%}">Intake</a>
   </div>
   {% endblock %} 

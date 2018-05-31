@@ -1,4 +1,4 @@
-{% extends "cases/base.html" %} 
+{% extends "base.html" %} 
 {% load bootstrap4 %} {% load static %} 
 {% block title %}Current cases{% endblock %} 
 {% block head %}
@@ -39,7 +39,7 @@
 	<h1 id="case-list-page-title" style="clear:left">Open cases</h1> {% if error_message %}
 	<p><strong>{{ error_message }}</strong></p>{% endif %} 
 	<div id="case-list" class="clearfix">
-	{% for case in person.case_set.all %}
+	{% for case in case_list %}
 		<div class="case-card{{case.is_open|yesno:', closed-case'}}" href="{% url 'cases:case_detail' case.slug %}" onclick="location.href='{% url 'cases:case_detail' case.slug %}';">
 			<div class="case-card-contents">
 			  <h3>{{case.client_name}}</h3>

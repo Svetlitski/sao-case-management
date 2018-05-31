@@ -27,14 +27,8 @@ class Person(models.Model):
         default=ACADEMIC,
     )
     name = models.CharField(max_length=30)
-    slug = models.SlugField(max_length=30, default="")  # slug is based on name
     account = models.OneToOneField(
         User, on_delete=models.CASCADE, blank=True, null=True, related_name='caseworker')
-
-    def save(self, *args, **kwargs):
-        if not self.slug:
-            self.slug = slugify(self.name)
-        super().save()
 
     def __str__(self):
         num_open = self.number_of_active_cases
