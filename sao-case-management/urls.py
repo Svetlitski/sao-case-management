@@ -22,5 +22,5 @@ urlpatterns = [
     path('login/', views.OfficeLoginView.as_view(), name='login'),
     path('logout/', views.logout_view, name='logout'),
     path('casework/', include('cases.urls')),
-    path('', views.home_view)
+    path('', views.home_view, name='home')
 ]

@@ -1,5 +1,4 @@
 from django.db import models
-from django.utils.text import slugify
 from phonenumber_field.modelfields import PhoneNumberField
 from django.contrib.auth.models import User
 from multiselectfield import MultiSelectField
@@ -56,13 +55,6 @@ class Case(models.Model):
     divisions = MultiSelectField(choices=DIVISION_CHOICES)
     is_open = models.BooleanField('case open?', default=True)
     last_updated = models.DateTimeField('time since last update', auto_now_add=True)
-    slug = models.SlugField(max_length=30, blank=True)
-
-    def save(self, *args, **kwargs):
-        if not self.slug:
-            # TODO: come up with a better slug that will still be unique
-            self.slug = slugify(self.pk)
-        super().save()
 
     def __str__(self):
         return self.client_name + ", " + str(self.open_date) + ", " + str(self.divisions)

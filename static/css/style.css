@@ -110,7 +110,6 @@ header {
 }
 
 .card-foot {
-    /*margin-top: 20px;*/
     position: absolute;
     text-align: center;
     bottom: 0;
@@ -149,28 +148,24 @@ header {
 
 /* Case detail view */
 
-
-/* TODO: configure to use flexbox */
-
-#updates {
-    width: 46%;
-    margin-right: 8%;
-    margin-bottom: 1%;
-    float: left;
+#case-detail-contents {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
 }
 
-#case-update-form {
-    width: 100px;
+#case-detail-contents>div {
+    width: 480px;
+    margin-bottom: 20px;
 }
 
 .ui-accordion-header {
     outline-width: 0;
 }
 
-#case-description {
-    width: 46%;
-    float: left;
-}
 
 
 

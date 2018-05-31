@@ -41,6 +41,13 @@ class CaseDetailView(LoginRequiredMixin, FormMixin, generic.DetailView):
         else:
             return self.form_invalid(form)
 
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        if request.user.caseworker in self.object.caseworkers.all():
+            return super(CaseDetailView, self).get(request, *args, **kwargs)
+        else:
+            return redirect(reverse('home'))
+
     def form_valid(self, form):
         form.save()
         return super(CaseDetailView, self).form_valid(form)
@@ -52,20 +59,22 @@ class CaseOpenCloseView(LoginRequiredMixin, generic.edit.UpdateView):
     template_name = 'cases/caseopenclose.html'
 
     def form_valid(self, form):
-        if self.object.close_date:  # Reopening a case
-            self.object.close_date = None
-        else:  # Closing a case
+        if self.object.is_open:  # Closing a case
             self.object.close_date = timezone.now()
+        else:  # Reopening a case
+            self.object.close_date = None
         self.object.is_open = not self.object.is_open
         self.object.save()
-        return redirect('/')
+        return redirect(reverse('home'))
 
 
 # Case intake form
 class IntakeView(LoginRequiredMixin, generic.FormView):
     template_name = 'cases/intake.html'
     form_class = IntakeForm
-    success_url = '/'  # Go to homepage
+
+    def get_success_url(self):
+        return reverse('home')
 
     def form_valid(self, form):
         form.save()
