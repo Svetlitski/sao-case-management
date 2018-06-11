@@ -23,15 +23,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '***REMOVED***'
+SECRET_KEY = os.environ['SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = ("LOCAL" in os.environ)
 
 ALLOWED_HOSTS = ['https://aqueous-sands-89769.herokuapp.com']
-
-
-#To be uncommented when we stop using the django development server
 
 # Security settings
 
@@ -42,7 +39,7 @@ SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
 
 # Increase to 31536000 (1 year) when sure this doesn't break things
-SECURE_HSTS_SECONDS = 30
+SECURE_HSTS_SECONDS = 3600
 
 SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 
@@ -53,7 +50,6 @@ SECURE_BROWSER_XSS_FILTER = True
 X_FRAME_OPTIONS = 'DENY'
 
 SECURE_HSTS_PRELOAD = True
-
 
 
 # Application definition
@@ -105,16 +101,18 @@ WSGI_APPLICATION = 'sao-case-management.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
-# DATABASES = {
-#     # 'default': {
-#     #     'ENGINE': 'django.db.backends.postgresql',
-#     #     'NAME': 'postgres',
-#     #     'USER': 'postgres',
-#     #     'HOST': 'db',
-#     #     'PORT': '5432',
-#     # }
-# }
-DATABASES = {'default': dj_database_url.config()}
+if "LOCAL" in os.environ:  # Running locally
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': 'sao_local_db',
+            'USER': 'postgres',
+            'HOST': 'localhost',
+            'PORT': '5432',
+        }
+    }
+else:  # In production
+    DATABASES = {'default': dj_database_url.config()}
 
 
 # Password validation
