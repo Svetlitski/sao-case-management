@@ -20,12 +20,12 @@ DIVISION_CHOICES = (
 
 # An individual caseworker
 class Person(models.Model):
+    name = models.CharField(max_length=30)
     division = models.CharField(
         max_length=3,
         choices=DIVISION_CHOICES,
         default=ACADEMIC,
     )
-    name = models.CharField(max_length=30)
     account = models.OneToOneField(
         User, on_delete=models.CASCADE, blank=True, null=True, related_name='caseworker')
 
@@ -35,7 +35,7 @@ class Person(models.Model):
 
     @property
     def number_of_active_cases(self):
-        return len(self.case_set.filter(is_open=True))
+        return self.case_set.filter(is_open=True).count()
 
     class Meta:
         verbose_name = 'Caseworker'
@@ -54,7 +54,8 @@ class Case(models.Model):
     caseworkers = models.ManyToManyField(Person, blank=True)
     divisions = MultiSelectField(choices=DIVISION_CHOICES)
     is_open = models.BooleanField('case open?', default=True)
-    last_updated = models.DateTimeField('time since last update', auto_now_add=True)
+    last_updated = models.DateTimeField(
+        'time since last update', auto_now_add=True)
 
     def __str__(self):
         return self.client_name + ", " + str(self.open_date) + ", " + str(self.divisions)
@@ -73,8 +74,13 @@ class Case(models.Model):
         return format_html(updates_information)
 
     def display_client_phone(self):
-        client_phone_string = str(self.client_phone)
-        return client_phone_string[0:2] + '-' + client_phone_string[2:5] + '-' + client_phone_string[5:8] + '-' + client_phone_string[8:]
+        phone_string = str(self.client_phone)
+        formatted_phone_string_without_country_code = phone_string[2:5] + \
+            '-' + phone_string[5:8] + '-' + phone_string[8:]
+        if phone_string[0:2] == '+1':  # if this is a US phone number
+            return formatted_phone_string_without_country_code
+        else:
+            return phone_string[0:2] + '-' + formatted_phone_string_without_country_code
 
     class Meta:
         ordering = ['-last_updated']  # ordered by most recent
