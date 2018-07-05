@@ -1,7 +1,12 @@
 from django.forms import ModelForm
 from django import forms
 from .models import Case, CaseUpdate
+from django.contrib.auth.models import Group
+from django.urls import reverse
 from phonenumber_field.widgets import PhoneNumberInternationalFallbackWidget
+import sendgrid
+import os
+from sendgrid.helpers.mail import *
 
 
 class CaseUpdateForm(ModelForm):
@@ -9,7 +14,8 @@ class CaseUpdateForm(ModelForm):
         model = CaseUpdate
         fields = ['update_description', 'case']
         labels = {'update_description': ""}
-        widgets = {'case': forms.HiddenInput()}  # user does not manually select which case a case update is for
+        # user does not manually select which case a case update is for
+        widgets = {'case': forms.HiddenInput()}
 
     def save(self, commit=True):
         case_update = super().save()
@@ -26,3 +32,27 @@ class IntakeForm(ModelForm):
                   'client_email', 'client_phone', 'client_SID',
                   'incident_description']
         widgets = {'client_phone': PhoneNumberInternationalFallbackWidget()}
+
+    def build_notification_email(self, object_id):
+        notification_mail = Mail()
+        notification_mail.from_email = Email(
+            'notifications@saoberkeley.herokuapp.com')
+        notification_mail.subject = 'A new case has been opened: %s, %s' % (
+            self.cleaned_data['client_name'], self.cleaned_data['divisions'])
+        object_url = reverse('admin:cases_case_change',
+                             kwargs={'object_id': object_id})
+        notification_mail.add_content(Content(
+            "text/html", "<html><body><p> A new case has been opened, <a href=%s> click here</a> to view it.</p></body></html>" % object_url))
+        personalization = Personalization()
+        for user in Group.objects.get(name='Intake Recipients').user_set.all():  # Chiefs and advocate, at least at the time this was written
+            personalization.add_to(Email(user.email))
+        for user in Group.objects.get(name='Division Leads').user_set.all():
+            if user.caseworker.division in self.cleaned_data['divisions']:
+                personalization.add_to(Email(user.email))
+        notification_mail.add_personalization(personalization)
+        return notification_mail.get()
+
+    def send_notification_email(self, object_id):
+        sg = sendgrid.SendGridAPIClient(apikey=os.environ['SENDGRID_API_KEY'])
+        data = self.build_notification_email(object_id)
+        response = sg.client.mail.send.post(request_body=data)

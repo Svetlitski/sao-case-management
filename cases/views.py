@@ -4,9 +4,7 @@ from django.shortcuts import redirect
 from django.urls import reverse
 from django.utils import timezone
 from django.views.generic.edit import FormMixin
-import sendgrid
-import os
-from sendgrid.helpers.mail import *
+
 from .models import Case
 from .forms import CaseUpdateForm, IntakeForm
 
@@ -80,20 +78,5 @@ class IntakeView(LoginRequiredMixin, generic.FormView):
         return reverse('home')
 
     def form_valid(self, form):
-        """
-        TODO: Make this work without having to hardcode emails in
-        """
-        new_case = form.save()
-        # Now send a notification email
-        sg = sendgrid.SendGridAPIClient(apikey=os.environ['SENDGRID_API_KEY'])
-        from_email = Email('notifications@saoberkeley.herokuapp.com')
-        advocate_email = Email("advocate@berkeleysao.org")
-        subject = 'A new case has been opened'
-        object_url = reverse('admin:cases_case_change', kwargs={'object_id': new_case.id})
-        content = Content("text/html", "<html><body><p> A new case has been added, <a href=%s> click here</a> to view it.</p></body></html>" % object_url)
-        notification_mail = Mail(from_email, subject, advocate_email, content)
-        #personalization = notification_mail.personalizations[0]
-        #additional_recipients = ['saochief@asuc.org', 'chief@berkeleysao.org']
-        #for division in new_case.divisions:
-        sg.client.mail.send.post(request_body=notification_mail.get())
+        form.send_notification_email(form.save().id)
         return super().form_valid(form)
