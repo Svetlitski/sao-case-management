@@ -35,10 +35,12 @@
 <header>
   {% block navbar %}
   <div id="navbar">
+    <a id="admin-link" href="{% url 'admin:index' %}">
     <img id="logo" width="40px" height="40px" src="{% static 'images/sao-logo.png' %}">
-    <a id="logout-btn" href="{% url 'logout' %}" style="float:right">Log out</a>
-    <a href="{% url 'cases:case_list' %}">Cases</a>
-    <a href="{% url 'cases:intake'%}">Intake</a>
+    </a>
+    <a id="logout-btn" class="nav-button" href="{% url 'logout' %}" style="float:right">Log out</a>
+    <a class="nav-button" href="{% url 'cases:case_list' %}">Cases</a>
+    <a class="nav-button" href="{% url 'cases:intake'%}">Intake</a>
   </div>
   {% endblock %} 
   {% block header %} {% endblock %}

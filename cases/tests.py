@@ -68,8 +68,11 @@ class CaseFactory(factory.DjangoModelFactory):
     @factory.post_generation
     def caseworkers(self, create, extracted, **kwargs):
         if extracted:
+            caseworkers_by_division = defaultdict(lambda: [])
+            for caseworker in extracted:
+                caseworkers_by_division[caseworker.division].append(caseworker)
             for div in self.divisions:
-                self.caseworkers.add(random.choice(extracted[div]))
+                self.caseworkers.add(random.choice(caseworkers_by_division[div]))
         else:
             self.caseworkers.set([PersonFactory.create(
                 division=div) for div in self.divisions])
@@ -88,11 +91,8 @@ class CaseModelTest(TestCase):
             division=div) for div in DIVISION_DATABASE_VALUES]
         # Then create more caseworkers randomly for a total of 50
         self.caseworkers += PersonFactory.create_batch(46)
-        caseworkers_by_division = defaultdict(lambda: [])
-        for caseworker in self.caseworkers:
-            caseworkers_by_division[caseworker.division].append(caseworker)
         self.cases = CaseFactory.create_batch(
-            200, caseworkers=caseworkers_by_division)
+            200, caseworkers=self.caseworkers)
 
     def test_case_closed_or_open_matches_date(self):
         for case in self.cases:
