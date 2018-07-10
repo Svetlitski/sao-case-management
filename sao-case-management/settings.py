@@ -20,8 +20,7 @@ SESSION_COOKIE_SECURE = True
 
 CSRF_COOKIE_SECURE = True
 
-# Increase to 31536000 (1 year) when sure this doesn't break things
-SECURE_HSTS_SECONDS = 3600
+SECURE_HSTS_SECONDS = 31536000  # one year
 
 SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 
@@ -104,7 +103,7 @@ if "LOCAL" in os.environ:  # Running locally
         }
     }
 else:  # In production
-    DATABASES = {'default': dj_database_url.config()}
+    DATABASES = {'default': dj_database_url.config(conn_max_age=600, ssl_require=True)}
 
 
 # Password validation
