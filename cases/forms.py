@@ -39,7 +39,7 @@ class IntakeForm(ModelForm):
             'notifications@saoberkeley.herokuapp.com')
         notification_mail.subject = 'A new case has been opened: %s, %s' % (
             self.cleaned_data['client_name'], self.cleaned_data['divisions'])
-        object_url = reverse('admin:cases_case_change',
+        object_url = 'https://saoberkeley.herokuapp.com' + reverse('admin:cases_case_change',
                              kwargs={'object_id': object_id})
         notification_mail.add_content(Content(
             "text/html", "<html><body><p> A new case has been opened, <a href=%s> click here</a> to view it.</p></body></html>" % object_url))
