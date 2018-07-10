@@ -12,7 +12,6 @@ DEBUG = ("LOCAL" in os.environ)
 
 ALLOWED_HOSTS = ['.herokuapp.com']
 
-
 # Security settings
 
 SECURE_SSL_REDIRECT = True
@@ -34,7 +33,6 @@ X_FRAME_OPTIONS = 'DENY'
 
 SECURE_HSTS_PRELOAD = True
 
-
 # Mail settings
 
 EMAIL_HOST = 'smtp.sendgrid.net'
@@ -46,7 +44,6 @@ EMAIL_HOST_PASSWORD = os.environ['SENDGRID_PASSWORD']
 EMAIL_PORT = 587
 
 EMAIL_USE_TLS = True
-
 
 # Application definition
 
@@ -161,8 +158,6 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'), )
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
-
 
 # Heroku configuration
 
