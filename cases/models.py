@@ -82,6 +82,10 @@ class Case(models.Model):
         else:
             return phone_string[0:2] + '-' + formatted_phone_string_without_country_code
 
+    @property
+    def client_initials(self):
+        return '.'.join([name[0] for name in self.client_name.split()])
+
     class Meta:
         ordering = ['-last_updated']  # ordered by most recent
 

@@ -1,5 +1,6 @@
 from .models import Case, Person, DIVISION_CHOICES
 from django.contrib import admin
+from django.contrib.auth.models import Group
 from django.utils import timezone
 
 
@@ -59,3 +60,9 @@ class CaseAdmin(admin.ModelAdmin):
     search_fields = ['incident_description']
     autocomplete_fields = ['caseworkers']
     actions = [close_cases, reopen_cases]
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        if request.user in Group.objects.get(name='Office Leads').user_set.all():
+            return qs  # Chiefs and advocate can see everything
+        return qs.filter(divisions__contains=request.user.caseworker.division)

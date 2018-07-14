@@ -109,12 +109,40 @@ header {
 }
 
 .case-card-contents {
+    position: absolute;
     width: 100%;
     padding: 3.333% 3.333% 0% 3.333%;
+    height: 0px;
+    top: 0;
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s, opacity 0.5s linear;
+}
+
+.case-card-contents-masked {
+    width: 100%;
+    padding: 3.333% 3.333% 0% 3.333%;
+    display: block;
+    text-align:right;
+    transition: visibility 0s, opacity 0.2s linear;
 }
 
 .case-card:hover {
     box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+}
+
+.case-card:hover .case-card-contents {
+    display: block;
+    visibility: visible;
+    opacity: 1;
+    z-index: 1;
+}
+
+.case-card:hover .case-card-contents-masked {
+    /*height: 0px;*/
+    opacity: 0;
+    /*display: none;*/
+    z-index: -1;
 }
 
 .card-foot {

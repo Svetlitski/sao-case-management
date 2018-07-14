@@ -41,6 +41,9 @@
 	<div id="case-list" class="clearfix">
 	{% for case in case_list %}
 		<div class="case-card{{case.is_open|yesno:', closed-case'}}" href="{% url 'cases:case_detail' case.pk %}" onclick="location.href='{% url 'cases:case_detail' case.pk %}';">
+			<div class="case-card-contents-masked">
+				<h3 style="white-space:pre">{{case.client_initials}}</h3>
+			</div>
 			<div class="case-card-contents">
 			  <h3>{{case.client_name}}</h3>
 			  <ul class="fa-ul">
@@ -51,6 +54,7 @@
 			    <li title="Student ID"><i class="fa-li fa fa-id-card"></i>{{case.client_SID}}</li>{% endif %}
 			  </ul>
 			</div>
+
 		  <div class="card-foot">
 		    <p title="Last updated {{ case.last_updated|timesince }} ago"><i class="fa fa-clock-o" style="margin-right:10px"></i> {{ case.last_updated|timesince }}</p>
 		  </div>
