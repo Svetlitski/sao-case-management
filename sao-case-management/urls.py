@@ -16,10 +16,14 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from . import views
+from django.contrib.auth.views import login
+from django_otp.forms import OTPAuthenticationForm
+
 
 urlpatterns = [
     path('admin/', admin.site.urls, name='admin'),
-    path('login/', views.OfficeLoginView.as_view(), name='login'),
+    path('login/', login, name='login',
+         kwargs={'authentication_form': OTPAuthenticationForm}),
     path('logout/', views.logout_view, name='logout'),
     path('casework/', include('cases.urls')),
     path('', views.home_view, name='home')

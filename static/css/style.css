@@ -75,6 +75,12 @@ header {
     margin-right: 5px;
 }
 
+/* Login form */
+
+#id_otp_device, #id_otp_challenge, label[for="id_otp_device"], label[for="id_otp_challenge"] {
+    display: none;
+}
+
 /* Case app */
 
 
