@@ -43,12 +43,11 @@
       <a id="admin-link">
       <img id="logo" width="40px" height="40px" src="{% static 'images/sao-logo.png' %}">
       </a>
-    {% endif %}
-
-    <a id="logout-btn" class="nav-button" href="{% url 'logout' %}" style="float:right">Log out</a>
+    {% endif %} 
     <a class="nav-button" href="{% url 'cases:case_list' %}">Cases</a>
     <a class="nav-button" href="{% url 'cases:intake'%}">Intake</a>
     <a class="nav-button" href="{% url 'user_change' pk=request.user.id %}">Account</a>
+    <a id="logout-btn" class="nav-button" href="{% url 'logout' %}">Log out</a>
   </div>
   {% endblock %} 
   {% block header %} {% endblock %}

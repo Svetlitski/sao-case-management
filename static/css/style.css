@@ -28,6 +28,8 @@ header {
 
 #navbar {
     position: fixed;
+    display: flex;
+    justify-content: flex-start;
     width: 100%;
     top: 0px;
     height: 50px;
@@ -40,23 +42,21 @@ header {
 }
 
 #logo {
-    /*float: left;*/
     vertical-align: top;
     position: relative;
-    /*bottom: 10px;*/
     top: 4px;
-    /*top: 3px;*/
-    /*right: 5px;*/
 }
 
 .nav-button {
-    padding: 15px 15px 8px 15px;
+    padding: 15px 0px;
+    width:20%;
+    max-width: 20%;
     border-bottom: 2px solid transparent;
     text-align: center;
-    float: left;
     vertical-align: middle;
     background-color: transparent;
     transition: 0.15s;
+    flex-basis: auto;
 }
 
 .nav-button:hover {
@@ -68,8 +68,11 @@ header {
     border-bottom: 2px solid rgb(234, 192, 74);
 }
 
+#logout-btn {
+    margin-left: auto;
+}
+
 #admin-link{
-    float: left;
     vertical-align: middle;
     background-color: transparent;
     margin-right: 5px;
