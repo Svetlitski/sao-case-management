@@ -2,11 +2,8 @@ from .models import Case, Person, DIVISION_CHOICES
 from django.contrib import admin
 from django.contrib.auth.models import Group
 from django.utils import timezone
-from django_otp.admin import OTPAdminSite
 
 admin.AdminSite.site_header = "SAO Case Administration"
-
-admin.site.__class__ = OTPAdminSite
 
 
 class CasesInline(admin.TabularInline):

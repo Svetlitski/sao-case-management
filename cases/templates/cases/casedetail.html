@@ -12,13 +12,33 @@
 
 	});
 	</script>
+	<script type="text/javascript">
+	$(function() {
+	    $('#show-client-information-toggle').click(function() {
+	        if (!$(this).data('clicked')) {
+	            $(this).data('clicked', true);
+	            $(this).text('Show client information');
+	            $('#client-information').toggle('drop');
+	        } else {
+	            $(this).data('clicked', false);
+	            $(this).text('Hide client information');
+	            $('#client-information').toggle('drop');
+	        }
+	    });
+	});
+	</script>
 {% endblock %} 
 {% block body %}
-	<a href="{% url 'cases:case_open_close' case.pk %}?next={{request.path|urlencode}}" class="btn btn-sm {{case.is_open|yesno:'btn-danger,btn-success'}}" style="float:right">{{case.is_open|yesno:'Close,Reopen'}} case</a>
-	<h3 style="clear:left">{{case.client_name}} [{{case.divisions}}]{% if not case.is_open %}, closed on {{case.close_date}}{% endif %}</h3>
-	<p> {% if case.client_phone %} <i class="fa fa-phone"></i> {{case.display_client_phone}}{% endif %} {% if case.client_email %} {{case.client_phone|yesno:" | ,"}} <i class="fa fa-envelope"></i><a href="mailto:{{case.client_email}}"> 
-			  {{case.client_email}}</a>{% endif %} {% if case.client_SID %} | <i class="fa fa-id-card"></i> {{case.client_SID}}{% endif %}
-	</p>
+	<div id="case-detail-btns" class="btn-group-vertical btn-group-sm">
+	<a href="{% url 'cases:case_open_close' case.pk %}?next={{request.path|urlencode}}" class="btn {{case.is_open|yesno:'btn-danger,btn-success'}}">{{case.is_open|yesno:'Close,Reopen'}} case</a>
+	<button id="show-client-information-toggle" type="button" class="btn btn-light">Hide client information</button>
+</div>
+	<div id="client-information">
+		<h3 style="clear:left">{{case.client_name}} [{{case.divisions}}]{% if not case.is_open %}, closed on {{case.close_date}}{% endif %}</h3>
+		<p> {% if case.client_phone %} <i class="fa fa-phone"></i> {{case.display_client_phone}}{% endif %} {% if case.client_email %} {{case.client_phone|yesno:" | ,"}} <i class="fa fa-envelope"></i><a href="mailto:{{case.client_email}}"> 
+				  {{case.client_email}}</a>{% endif %} {% if case.client_SID %} | <i class="fa fa-id-card"></i> {{case.client_SID}}{% endif %}
+		</p>
+	</div>
 	<div id="case-detail-contents">
 		<div id="updates">
 		  {% for update in case.caseupdate_set.all %}

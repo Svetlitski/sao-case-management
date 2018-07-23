@@ -35,12 +35,20 @@
 <header>
   {% block navbar %}
   <div id="navbar">
-    <a id="admin-link" href="{% url 'admin:index' %}">
-    <img id="logo" width="40px" height="40px" src="{% static 'images/sao-logo.png' %}">
-    </a>
+    {% if request.user.is_staff %}
+      <a id="admin-link" href="{% url 'admin:index' %}">
+      <img id="logo" width="40px" height="40px" src="{% static 'images/sao-logo.png' %}">
+      </a>
+    {% else %}
+      <a id="admin-link">
+      <img id="logo" width="40px" height="40px" src="{% static 'images/sao-logo.png' %}">
+      </a>
+    {% endif %}
+
     <a id="logout-btn" class="nav-button" href="{% url 'logout' %}" style="float:right">Log out</a>
     <a class="nav-button" href="{% url 'cases:case_list' %}">Cases</a>
     <a class="nav-button" href="{% url 'cases:intake'%}">Intake</a>
+    <a class="nav-button" href="{% url 'user_change' pk=request.user.id %}">Account</a>
   </div>
   {% endblock %} 
   {% block header %} {% endblock %}

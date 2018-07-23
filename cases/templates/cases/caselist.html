@@ -36,7 +36,7 @@
 {% endblock %} 
 {% block body %}
 	<button id="show-all-cases-toggle" type="button" class="btn btn-md btn-light" style="float:right">Show all cases</button>
-	<h1 id="case-list-page-title" style="clear:left">Open cases</h1> {% if error_message %}
+	<h2 id="case-list-page-title" style="clear:left">Open cases</h2> {% if error_message %}
 	<p><strong>{{ error_message }}</strong></p>{% endif %} 
 	<div id="case-list" class="clearfix">
 	{% for case in case_list %}

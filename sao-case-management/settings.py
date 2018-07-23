@@ -6,33 +6,35 @@ MASTER_BASE_DIR = os.path.dirname(__file__)
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-SECRET_KEY = os.environ['SECRET_KEY']
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
-DEBUG = ("LOCAL" in os.environ)
+LOCAL = ("LOCAL" in os.environ)
+
+DEBUG = LOCAL
 
 ALLOWED_HOSTS = ['.herokuapp.com']
 
 # Security settings
 
-SECURE_SSL_REDIRECT = True
+SECURE_SSL_REDIRECT = not LOCAL
 
-SESSION_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = not LOCAL
 
-CSRF_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = not LOCAL
 
 SECURE_HSTS_SECONDS = 31536000  # one year
 
-SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_INCLUDE_SUBDOMAINS = not LOCAL
 
-SECURE_CONTENT_TYPE_NOSNIFF = True
+SECURE_CONTENT_TYPE_NOSNIFF = not LOCAL
 
-SECURE_BROWSER_XSS_FILTER = True
+SECURE_BROWSER_XSS_FILTER = not LOCAL
 
 X_FRAME_OPTIONS = 'DENY'
 
-SECURE_HSTS_PRELOAD = True
+SECURE_HSTS_PRELOAD = not LOCAL
 
-OTP_TOTP_ISSUER = "Student Advocate's Office"
+SESSION_EXPIRE_AT_BROWSER_CLOSE = not LOCAL
 
 # Mail settings
 
@@ -58,8 +60,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'bootstrap4',
     'phonenumber_field',
-    'django_otp',
-    'django_otp.plugins.otp_totp',
 ]
 
 MIDDLEWARE = [
@@ -69,7 +69,6 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django_otp.middleware.OTPMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
@@ -131,9 +130,11 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Login urls
 
-LOGIN_URL = 'login/'
+LOGIN_URL = 'login'
 
 LOGIN_REDIRECT_URL = '/'  # Home page
+
+LOGOUT_REDIRECT_URL = 'login'
 
 
 # Localization

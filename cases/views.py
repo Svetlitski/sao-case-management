@@ -59,6 +59,9 @@ class CaseOpenCloseView(LoginRequiredMixin, generic.edit.UpdateView):
     fields = []
     template_name = 'cases/caseopenclose.html'
 
+    def get_success_url(self):
+        return reverse('home')
+
     def form_valid(self, form):
         if self.object.is_open:  # Closing a case
             self.object.close_date = timezone.now()
@@ -66,7 +69,7 @@ class CaseOpenCloseView(LoginRequiredMixin, generic.edit.UpdateView):
             self.object.close_date = None
         self.object.is_open = not self.object.is_open
         self.object.save()
-        return redirect(reverse('home'))
+        return super().form_valid(form)
 
 
 # Case intake form

@@ -2,7 +2,7 @@
 {% load bootstrap4 %} 
 {% block title %}Intake form{% endblock %} 
 {% block body %}
-  <h1>Intake form</h1>
+  <h2>Intake form</h2>
   <form role="form" action="" method="post">
     {% csrf_token %} {% bootstrap_form form %} {% buttons %}
     <button id=type="submit" class="btn btn-primary">Submit</button>
