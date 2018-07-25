@@ -1,6 +1,16 @@
 {% extends "base.html" %} 
 {% load bootstrap4 %} 
-{% block title %}Intake form{% endblock %} 
+{% block title %}Intake form{% endblock %}
+{% block header %}
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/base/jquery-ui.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+  <script>
+  $( function() {
+    $("#id_open_date").datepicker();
+  } );
+  </script>
+{% endblock %}
 {% block body %}
   <h2>Intake form</h2>
   <form role="form" action="" method="post">

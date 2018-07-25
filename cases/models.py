@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from multiselectfield import MultiSelectField
 from django.core.exceptions import ValidationError
 from django.utils.html import format_html
+from django.utils import timezone
 
 
 ACADEMIC = 'ACA'
@@ -48,7 +49,7 @@ class Case(models.Model):
     client_phone = PhoneNumberField(blank=True)
     client_SID = models.CharField(max_length=10, blank=True)
     incident_description = models.TextField()
-    open_date = models.DateField('date case was opened', auto_now_add=True)
+    open_date = models.DateField('date case was opened', default=timezone.now)
     close_date = models.DateField(
         'date case was closed', blank=True, null=True)
     caseworkers = models.ManyToManyField(Person, blank=True)

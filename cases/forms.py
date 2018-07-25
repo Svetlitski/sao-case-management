@@ -29,7 +29,7 @@ class IntakeForm(ModelForm):
     class Meta:
         model = Case
         fields = ['divisions', 'client_name',
-                  'client_email', 'client_phone', 'client_SID',
+                  'client_email', 'client_phone', 'client_SID', 'open_date',
                   'incident_description']
         widgets = {'client_phone': PhoneNumberInternationalFallbackWidget()}
 

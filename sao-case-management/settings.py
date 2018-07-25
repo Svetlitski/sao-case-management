@@ -8,7 +8,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
-LOCAL = ("LOCAL" in os.environ)
+LOCAL = ("LOCAL" in os.environ)  # True if running locally
 
 DEBUG = LOCAL
 
@@ -60,6 +60,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'bootstrap4',
     'phonenumber_field',
+    'raven.contrib.django.raven_compat',
 ]
 
 MIDDLEWARE = [
@@ -96,7 +97,7 @@ WSGI_APPLICATION = 'sao-case-management.wsgi.application'
 
 # Database
 
-if "LOCAL" in os.environ:  # Running locally
+if LOCAL:  # Running locally
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
@@ -143,7 +144,7 @@ LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'America/Los_Angeles'
 
-USE_I18N = True
+USE_I18N = False
 
 USE_L10N = True
 

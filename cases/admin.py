@@ -50,7 +50,7 @@ reopen_cases.short_description = "Reopen selected cases"
 @admin.register(Case)
 class CaseAdmin(admin.ModelAdmin):
     fields = ['divisions', 'caseworkers', 'client_name',
-              'client_email', 'client_phone', 'client_SID',
+              'client_email', 'client_phone', 'client_SID', 'open_date',
               'incident_description', 'is_open', 'close_date', 'updates']
     readonly_fields = ['updates']
     list_display = ('get_divisions_display',
