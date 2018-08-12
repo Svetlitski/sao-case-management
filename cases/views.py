@@ -4,6 +4,7 @@ from django.shortcuts import redirect
 from django.urls import reverse
 from django.utils import timezone
 from django.views.generic.edit import FormMixin
+from django.conf import settings
 
 from .models import Case
 from .forms import CaseUpdateForm, IntakeForm
@@ -80,6 +81,13 @@ class IntakeView(LoginRequiredMixin, generic.FormView):
     def get_success_url(self):
         return reverse('home')
 
+    def get_initial(self):
+        initial = super(IntakeView, self).get_initial()
+        initial['intake_caseworker'] = self.request.user.caseworker
+        return initial
+
     def form_valid(self, form):
-        form.send_notification_email(form.save().id)
+        case = form.save()
+        if not settings.LOCAL:
+            form.send_notification_email(case.id)
         return super().form_valid(form)

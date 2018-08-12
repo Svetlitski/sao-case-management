@@ -61,6 +61,7 @@ INSTALLED_APPS = [
     'bootstrap4',
     'phonenumber_field',
     'raven.contrib.django.raven_compat',
+    'tinymce',
 ]
 
 MIDDLEWARE = [

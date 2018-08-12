@@ -2,6 +2,7 @@ from .models import Case, Person, DIVISION_CHOICES
 from django.contrib import admin
 from django.contrib.auth.models import Group
 from django.utils import timezone
+from django.utils.safestring import mark_safe
 
 admin.AdminSite.site_header = "SAO Case Administration"
 
@@ -49,10 +50,10 @@ reopen_cases.short_description = "Reopen selected cases"
 
 @admin.register(Case)
 class CaseAdmin(admin.ModelAdmin):
-    fields = ['divisions', 'caseworkers', 'client_name',
+    fields = ['divisions', 'caseworkers', 'intake_caseworker', 'client_name',
               'client_email', 'client_phone', 'client_SID', 'open_date',
               'incident_description', 'is_open', 'close_date', 'updates']
-    readonly_fields = ['updates']
+    readonly_fields = ['updates', 'intake_caseworker']
     list_display = ('get_divisions_display',
                     'open_date', 'client_name', 'is_open')
     list_filter = ['open_date', 'is_open', DivisionsListFilter]

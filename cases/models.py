@@ -5,6 +5,7 @@ from multiselectfield import MultiSelectField
 from django.core.exceptions import ValidationError
 from django.utils.html import format_html
 from django.utils import timezone
+from tinymce import HTMLField
 
 
 ACADEMIC = 'ACA'
@@ -48,10 +49,11 @@ class Case(models.Model):
     client_email = models.EmailField(blank=True)
     client_phone = PhoneNumberField(blank=True)
     client_SID = models.CharField(max_length=10, blank=True)
-    incident_description = models.TextField()
+    incident_description = HTMLField()
     open_date = models.DateField('date case was opened', default=timezone.now)
     close_date = models.DateField(
         'date case was closed', blank=True, null=True)
+    intake_caseworker = models.ForeignKey(Person, null=True, blank=True, on_delete=models.SET_NULL, related_name='intakes')
     caseworkers = models.ManyToManyField(Person, blank=True)
     divisions = MultiSelectField(choices=DIVISION_CHOICES)
     is_open = models.BooleanField('case open?', default=True)
@@ -69,9 +71,7 @@ class Case(models.Model):
     def updates(self):
         updates_information = ""
         for update in self.caseupdate_set.all():
-            # Using format_html instead of string substitution in loop in order to sanitize input
-            updates_information += format_html('<p> <b> {} </b> – {} </p>',
-                                               update.creation_date.strftime("%B %d, %Y at %X"), update.update_description)
+            updates_information += '<p> <b> %s </b></p> %s ' % (update.creation_date.strftime("%B %d, %Y at %I:%M %p"), update.update_description)
         return format_html(updates_information)
 
     def display_client_phone(self):
@@ -95,7 +95,7 @@ class CaseUpdate(models.Model):
     case = models.ForeignKey(
         Case, on_delete=models.CASCADE, blank=True, null=True)
     creation_date = models.DateTimeField(auto_now_add=True)
-    update_description = models.TextField()
+    update_description = HTMLField()
 
     def __str__(self):
         return self.creation_date.strftime("%B %d, %Y at %X") + ' – ' + str(self.update_description)

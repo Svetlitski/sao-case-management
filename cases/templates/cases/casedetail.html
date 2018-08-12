@@ -27,6 +27,7 @@
 	    });
 	});
 	</script>
+	{{form.media}}
 {% endblock %} 
 {% block body %}
 	<div id="case-detail-btns" class="btn-group-vertical btn-group-sm">
@@ -44,13 +45,13 @@
 		  {% for update in case.caseupdate_set.all %}
 		  <h4>{{update.creation_date}}</h4>
 		  <div class="update-card">
-		    <p>{{update.update_description}}</p>
+		    <p>{{update.update_description|safe}}</p>
 		  </div>
 		  {% endfor %}
 		</div>
 		<div id="case-description">
 		  <h4>Intake report [{{case.open_date}}]</h4>
-		  <p>{{ case.incident_description }}</p>
+		  {{ case.incident_description|safe }}
 		</div>
 		{% if case.is_open %}
 			<div id="case-update-form">

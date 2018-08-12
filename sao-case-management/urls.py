@@ -15,5 +15,6 @@ urlpatterns = [
     ]
     )),
     path('casework/', include('cases.urls')),
+    path('tinymce/', include('tinymce.urls')),
     path('', views.home_view, name='home')
 ]
