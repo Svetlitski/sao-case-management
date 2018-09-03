@@ -2,20 +2,16 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" /> 
-  {% load static %} {% load compress %} {% load bootstrap4 %}
+  {% load static %} {% load bootstrap4 %}
   <link rel="shortcut icon" type="image/jpg" href="{% static 'images/favicon.jpg' %}" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
   {% bootstrap_css %}
   {% bootstrap_javascript %}
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  {% compress css %}
+  
   <link rel="stylesheet" href="{% static 'css/style.css' %}" type="text/css" media="screen" />
-  {% endcompress %}
-  {% compress js %}
   <script src="{% static 'js/base.js' %}"></script>
-  {% block extra_js %} {% endblock %}
-  {% endcompress %}
   <title>{% block title %}{% endblock %}</title>
   {% block extra_head %}{% endblock %}
 </head>

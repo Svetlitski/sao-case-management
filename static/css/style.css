@@ -48,9 +48,8 @@ header {
 }
 
 .nav-button {
-    padding: 15px 0px;
-    width:20%;
-    max-width: 20%;
+    padding: 15px 15px;
+    width: auto;
     border-bottom: 2px solid transparent;
     text-align: center;
     vertical-align: middle;
@@ -70,6 +69,7 @@ header {
 
 #logout-btn {
     margin-left: auto;
+    padding: 15px 5px;
 }
 
 #admin-link{

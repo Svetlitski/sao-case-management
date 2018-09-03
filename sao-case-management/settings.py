@@ -14,6 +14,7 @@ DEBUG = LOCAL
 
 ALLOWED_HOSTS = ['.herokuapp.com']
 
+
 # Security settings
 
 SECURE_SSL_REDIRECT = not LOCAL
@@ -36,6 +37,7 @@ SECURE_HSTS_PRELOAD = not LOCAL
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE = not LOCAL
 
+
 # Mail settings
 
 EMAIL_HOST = 'smtp.sendgrid.net'
@@ -48,7 +50,6 @@ EMAIL_PORT = 587
 
 EMAIL_USE_TLS = True
 
-COMPRESS_ENABLED = True
 
 # Application definition
 
@@ -64,7 +65,6 @@ INSTALLED_APPS = [
     'phonenumber_field',
     'raven.contrib.django.raven_compat',
     'tinymce',
-    'compressor',
 ]
 
 MIDDLEWARE = [
@@ -168,12 +168,6 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'), )
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
-STATICFILES_FINDERS = (
-    'django.contrib.staticfiles.finders.FileSystemFinder',
-    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-    'compressor.finders.CompressorFinder',
-)
 
 
 # Heroku configuration
