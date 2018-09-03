@@ -13,6 +13,17 @@ class CasesInline(admin.TabularInline):
     verbose_name = 'case'
     verbose_name_plural = 'cases'
 
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        if request.user in Group.objects.get(name='Office Leads').user_set.all():
+            return qs  # Chiefs and advocate can see everything
+        return qs.filter(case__divisions__contains=request.user.caseworker.division)
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == 'case' and request.user not in Group.objects.get(name='Office Leads').user_set.all():
+            kwargs["queryset"] = Case.objects.filter(divisions__contains=request.user.caseworker.division)
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
+
 
 @admin.register(Person)
 class PersonAdmin(admin.ModelAdmin):
