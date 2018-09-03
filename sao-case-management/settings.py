@@ -48,6 +48,8 @@ EMAIL_PORT = 587
 
 EMAIL_USE_TLS = True
 
+COMPRESS_ENABLED = True
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -62,6 +64,7 @@ INSTALLED_APPS = [
     'phonenumber_field',
     'raven.contrib.django.raven_compat',
     'tinymce',
+    'compressor',
 ]
 
 MIDDLEWARE = [
@@ -165,6 +168,13 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'), )
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'compressor.finders.CompressorFinder',
+)
+
 
 # Heroku configuration
 

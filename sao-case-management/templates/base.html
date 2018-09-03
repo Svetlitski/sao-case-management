@@ -1,36 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="utf-8" /> 
-  {% load bootstrap4 %} {% load static %} {% bootstrap_css %} 
-  {% bootstrap_javascript %} 
-  {% block head %}{% endblock %}
+  {% load static %} {% load compress %} {% load bootstrap4 %}
   <link rel="shortcut icon" type="image/jpg" href="{% static 'images/favicon.jpg' %}" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  <link rel="stylesheet" href="{% static 'css/style.css' %}" type="text/css" media="screen" />
+  {% bootstrap_css %}
+  {% bootstrap_javascript %}
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/base/jquery-ui.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-  <script type="text/javascript">
-  $(function() { // Puts a colored border under the current page in the navbar
-      $page = window.location.pathname;
-      if (!$page) {
-          $page = 'index.html';
-      }
-      $("#navbar a").each(function() {
-          var $href = $(this).attr('href');
-          if (($href == $page) || ($href == '')) {
-              $(this).addClass('is_current_page');
-          } else {
-              $(this).removeClass('is_current_page');
-          }
-      });
-  });
-  </script>
+  {% compress css %}
+  <link rel="stylesheet" href="{% static 'css/style.css' %}" type="text/css" media="screen" />
+  {% endcompress %}
+  {% compress js %}
+  <script src="{% static 'js/base.js' %}"></script>
+  {% block extra_js %} {% endblock %}
+  {% endcompress %}
   <title>{% block title %}{% endblock %}</title>
+  {% block extra_head %}{% endblock %}
 </head>
 <header>
   {% block navbar %}
@@ -50,7 +37,6 @@
     <a id="logout-btn" class="nav-button" href="{% url 'logout' %}">Log out</a>
   </div>
   {% endblock %} 
-  {% block header %} {% endblock %}
 </header>
 
 <body>

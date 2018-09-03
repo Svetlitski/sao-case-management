@@ -1,38 +1,11 @@
 {% extends "base.html" %} 
-{% load bootstrap4 %} {% load static %} 
+{% load bootstrap4 %} {% load static %}
 {% block title %}Current cases{% endblock %} 
-{% block head %}
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-	<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/base/jquery-ui.css">
-	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-	<script type="text/javascript">
-	$(function() {
-	    $('#show-all-cases-toggle').click(function() {
-	        if (!$(this).data('clicked')) {
-	            $(this).data('clicked', true);
-	            $(this).text('Show only open cases');
-	            $('#case-list-page-title').text('All cases');
-	            $('.closed-case').each(function() {
-	                $(this).addClass('closed-case-visible');
-	                $(this)[0].onclick = null;
-	                $(this).off('click')
-	                $(this).on('click', function(e) {
-	                    if (confirm("This case is closed. You may view it, but you cannot make any changes or additions to the case record without reopening the case.")) {
-	                        location.href = $(this).attr("href");
-	                    } else {
-	                        e.preventDefault();
-	                    }
-	                });
-	            });
-	        } else {
-	            $(this).data('clicked', false);
-	            $(this).text('Show all cases');
-	            $('#case-list-page-title').text('Open cases')
-	            $('.closed-case').each(function() { $(this).removeClass("closed-case-visible") });
-	        }
-	    });
-	});
-	</script>
+{% block extra_js %}
+	<script src="{% static 'cases/js/caselist.js' %}" type="text/javascript"></script>
+{% endblock %}
+{% block extra_head %}
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 {% endblock %} 
 {% block body %}
 	<button id="show-all-cases-toggle" type="button" class="btn btn-md btn-light" style="float:right">Show all cases</button>
