@@ -1,6 +1,13 @@
 {% extends "base.html" %} 
 {% load bootstrap4 %} 
-{% block title %}Manage account{% endblock %} 
+{% block title %}Manage account{% endblock %}
+{% block extra_head %}
+  <script>
+      $( function () {
+        $(".nav-item > a[href=\"{% url 'user_change' request.user.id %}\"]").parent().addClass("active");
+      });
+  </script>
+{% endblock %}
 {% block body %}
   <h2>Manage account</h2>
   <br>
