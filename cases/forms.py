@@ -16,7 +16,7 @@ class CaseUpdateForm(ModelForm):
         fields = ['update_description', 'case']
         labels = {'update_description': ""}
         # user does not manually select which case a case update is for
-        widgets = {'case': forms.HiddenInput(), 'update_description': TinyMCE(mce_attrs={'height': 200})}
+        widgets = {'case': forms.HiddenInput(), 'update_description': TinyMCE(mce_attrs={'height': 200, 'browser_spellcheck': True})}
 
     def save(self, commit=True):
         case_update = super().save()
@@ -33,7 +33,7 @@ class IntakeForm(ModelForm):
                   'client_email', 'client_phone', 'client_SID', 'open_date',
                   'incident_description', 'intake_caseworker']
         widgets = {'client_phone': PhoneNumberInternationalFallbackWidget(),
-                   'incident_description': TinyMCE(),
+                   'incident_description': TinyMCE(mce_attrs={'browser_spellcheck': True}),
                    'intake_caseworker': forms.HiddenInput()}
 
     def build_notification_email(self, object_id):

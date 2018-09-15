@@ -3,13 +3,7 @@
 {% block title %}Current cases{% endblock %} 
 {% block extra_head %}
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-	<script src="{% static 'cases/js/caselist.js' %}" type="text/javascript"></script>
-	<script>
-		$( function () {
-			$(".nav-item > a[href=\"{% url 'cases:case_list' %}\"]").parent().addClass("active");
-		});
-	</script>
-		
+	<script src="{% static 'cases/js/caselist.js' %}" type="text/javascript"></script>	
 {% endblock %} 
 {% block body %}
 	<button id="show-all-cases-toggle" type="button" class="btn btn-md btn-light" style="float:right">Show all cases</button>
