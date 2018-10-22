@@ -10,7 +10,6 @@
 <form role="form" action="" method="post">
   {% csrf_token %}   {{form.media}} {% bootstrap_form form %} {% buttons %}
   <button id=type="submit" class="btn btn-primary">Submit</button>
-  <button type="reset" class="btn btn-secondary">Reset form</button>
   {% endbuttons %}
 </form>
 
