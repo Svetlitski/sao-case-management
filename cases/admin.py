@@ -1,9 +1,9 @@
 from .models import Case, Person, DIVISION_CHOICES
 from django.contrib import admin
+from tinymce import HTMLField, TinyMCE
 from django.contrib.auth.models import Group
 from django.utils import timezone
-from django.utils.safestring import mark_safe
-
+from cases.forms import TINY_MCE_SETUP
 admin.AdminSite.site_header = "SAO Case Administration"
 
 
@@ -71,6 +71,7 @@ class CaseAdmin(admin.ModelAdmin):
     search_fields = ['incident_description']
     autocomplete_fields = ['caseworkers']
     actions = [close_cases, reopen_cases]
+    formfield_overrides = {HTMLField: {'widget': TinyMCE(mce_attrs={'width': '100%', **TINY_MCE_SETUP})}}
 
     def get_queryset(self, request):
         qs = super().get_queryset(request)

@@ -25,7 +25,7 @@
 		  {% for update in case.caseupdate_set.all %}
 		  <h4>{{update.creation_date}}</h4>
 		  <div class="update-card">
-		    <p>{{update.update_description|safe}}</p>
+		    {{update.update_description|safe}}
 		  </div>
 		  {% endfor %}
 		</div>
