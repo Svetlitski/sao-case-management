@@ -53,7 +53,7 @@ class IntakeForm(ModelForm):
         notification_mail.add_content(Content(
             "text/html", "<html><body><p> A new case has been opened, <a href=%s> click here</a> to view it.</p></body></html>" % object_url))
         personalization = Personalization()
-        for user in Group.objects.get(name='Office Leads').user_set.all():  # Chiefs and advocate, at least at the time this was written
+        for user in Group.objects.get(name='Intake Recipients').user_set.all():  # Internal chief and advocate, at least at the time this was written
             personalization.add_to(Email(user.email))
         for user in Group.objects.get(name='Division Leads').user_set.all():
             if user.caseworker.division in self.cleaned_data['divisions']:
