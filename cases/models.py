@@ -3,7 +3,8 @@ from phonenumber_field.modelfields import PhoneNumberField
 from django.contrib.auth.models import User
 from multiselectfield import MultiSelectField
 from django.core.exceptions import ValidationError
-from django.utils.html import format_html
+from django.utils.html import format_html_join
+from django.utils.safestring import mark_safe
 from django.utils import timezone
 from tinymce import HTMLField
 
@@ -69,10 +70,13 @@ class Case(models.Model):
                 "You must record the client's contact information.")
 
     def updates(self):
-        updates_information = ""
-        for update in self.caseupdate_set.all():
-            updates_information += '<p> <b> %s </b></p> %s ' % (update.creation_date.strftime("%B %d, %Y at %I:%M %p"), update.update_description)
-        return format_html(updates_information)
+        # I apologize if anyone else is reading this code
+        # Hopefully will refactor eventually
+        if self.caseworkers.count() > 1:
+            update_descriptions = (((update.creation_date.strftime("%B %d, %Y at %I:%M %p"), '[' + update.creator.name + ']'if update.creator is not None else '', mark_safe(update.update_description)) for update in self.caseupdate_set.all()))
+        else:
+            update_descriptions = (((update.creation_date.strftime("%B %d, %Y at %I:%M %p"), '', mark_safe(update.update_description)) for update in self.caseupdate_set.all()))
+        return format_html_join('', "<p> <b> {} {}</b></p> {} ", update_descriptions)
 
     def display_client_phone(self):
         phone_string = str(self.client_phone)
@@ -96,6 +100,7 @@ class CaseUpdate(models.Model):
         Case, on_delete=models.CASCADE, blank=True, null=True)
     creation_date = models.DateTimeField(auto_now_add=True)
     update_description = HTMLField()
+    creator = models.ForeignKey(Person, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
         return self.creation_date.strftime("%B %d, %Y at %X") + ' – ' + str(self.update_description)

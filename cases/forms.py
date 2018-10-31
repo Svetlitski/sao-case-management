@@ -19,10 +19,10 @@ TINY_MCE_SETUP = {'browser_spellcheck': True, 'valid_elements': 'a,strong,p,ul,o
 class CaseUpdateForm(ModelForm):
     class Meta:
         model = CaseUpdate
-        fields = ['update_description', 'case']
+        fields = ['update_description', 'case', 'creator']
         labels = {'update_description': ""}
-        # user does not manually select which case a case update is for
-        widgets = {'case': forms.HiddenInput(), 'update_description': TinyMCE(mce_attrs={'height': 200, **TINY_MCE_SETUP})}
+        # user does not manually select which case a case update is for, or the creator
+        widgets = {'case': forms.HiddenInput(), 'creator': forms.HiddenInput(), 'update_description': TinyMCE(mce_attrs={'height': 200, **TINY_MCE_SETUP})}
 
     def save(self, commit=True):
         case_update = super().save()

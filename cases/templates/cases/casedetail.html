@@ -23,7 +23,11 @@
 	<div id="case-detail-contents">
 		<div id="updates">
 		  {% for update in case.caseupdate_set.all %}
-		  <h4>{{update.creation_date}}</h4>
+		  {% if case.caseworkers.count > 1 and update.creator is not None %}
+			  <h4>{{update.creation_date}} [{{update.creator.name}}]</h4>
+		  {% else %}
+			  <h4>{{update.creation_date}}</h4>
+		  {% endif %}
 		  <div class="update-card">
 		    {{update.update_description|safe}}
 		  </div>

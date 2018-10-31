@@ -32,7 +32,7 @@ class CaseDetailView(LoginRequiredMixin, FormMixin, generic.DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(CaseDetailView, self).get_context_data(**kwargs)
-        context['form'] = CaseUpdateForm(initial={'case': self.object})
+        context['form'] = CaseUpdateForm(initial={'case': self.object, 'creator': self.request.user.caseworker})
         return context
 
     def post(self, request, *args, **kwargs):
