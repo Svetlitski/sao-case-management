@@ -1,11 +1,12 @@
 {% extends "base.html" %} 
 {% load bootstrap4 %} 
 {% block title %}Case update{% endblock %} 
+{% block extra_head %} {{form.media}} {% endblock %}
 {% block body %}
   <h1>Case update</h1>
   <form role="form" action="" method="post">
-    {% csrf_token %} {% bootstrap_form form %} {% buttons %}
+    {% csrf_token %} 
+	{% bootstrap_form form %}
     <button id=type="submit" class="btn btn-primary">Submit</button>
-    {% endbuttons %}
   </form>
 {% endblock %}

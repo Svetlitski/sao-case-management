@@ -1,16 +1,20 @@
-{% extends "base.html" %} {% load bootstrap4 %} {% load static %} {% block title %}Intake form{% endblock %}
+{% extends "base.html" %} 
+{% load bootstrap4 %}
+{% load static %} 
+{% block title %}Intake form{% endblock %}
 
 {% block extra_head %}
 <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/base/jquery-ui.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 <script src="{% static 'cases/js/intake.js' %}" type="text/javascript"></script>
+{{form.media}} 
 {% endblock %} 
+
 {% block body %}
 <h2>Intake form</h2>
 <form role="form" action="" method="post">
-  {% csrf_token %}   {{form.media}} {% bootstrap_form form %} {% buttons %}
+  {% csrf_token %} 
+  {% bootstrap_form form %}
   <button id=type="submit" class="btn btn-primary">Submit</button>
-  {% endbuttons %}
 </form>
-
 {% endblock %}

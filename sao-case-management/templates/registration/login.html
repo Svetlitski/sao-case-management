@@ -4,13 +4,12 @@
 {% block navbar %}{% endblock %} {# Don't want the nav bar on the login page #} 
 
 {% block body %}
-  <h2>Log in to your account</h2>
-  <br>
-  <form method="post" action="{% url 'login' %}">
-    {% csrf_token %}
-    {% bootstrap_form form %} {% buttons %}
-    <button type="submit" class="btn btn-primary">Log in</button>
-    <button type="reset" class="btn btn-secondary">Clear</button>
-    {% endbuttons %}
-  </form>
+<h2>Log in to your account</h2>
+<br>
+<form method="post" action="{% url 'login' %}">
+	{% csrf_token %}
+	{% bootstrap_form form %}
+	<button type="submit" class="btn btn-primary">Log in</button>
+	<button type="reset" class="btn btn-secondary">Clear</button>
+</form>
 {% endblock %}

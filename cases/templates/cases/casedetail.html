@@ -1,18 +1,21 @@
 {% extends "base.html" %} 
 {% load bootstrap4 %} {% load static %}
 {% block title %}{{case.client_name}}{% endblock %}
+
 {% block extra_head %}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-	<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/base/jquery-ui.css">
-	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-	<script> var clientName = "{{ case.client_name }}"; </script>
-	<script src="{% static 'cases/js/casedetail.js' %}" type="text/javascript"></script>
-	{{form.media}}
+<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+<script> var clientName = "{{ case.client_name }}"; </script>
+<script src="{% static 'cases/js/casedetail.js' %}" type="text/javascript"></script>
+{{form.media}}
 {% endblock %} 
+
 {% block body %}
-	<div id="case-detail-btns" class="btn-group-vertical btn-group-sm">
-	<a href="{% url 'cases:case_open_close' case.pk %}?next={{request.path|urlencode}}" class="btn {{case.is_open|yesno:'btn-danger,btn-success'}}">{{case.is_open|yesno:'Close,Reopen'}} case</a>
-	<button id="show-client-information-toggle" type="button" class="btn btn-light">Hide client information</button>
+<div id="case-detail-btns" class="btn-group-vertical btn-group-sm">
+<a href="{% url 'cases:case_open_close' case.pk %}?next={{request.path|urlencode}}" class="btn {{case.is_open|yesno:'btn-danger,btn-success'}}">{{case.is_open|yesno:'Close,Reopen'}} case</a>
+<button id="show-client-information-toggle" type="button" class="btn btn-light">Hide client information</button>
+
 </div>
 	<div id="client-information">
 		<h3 style="clear:left">{{case.client_name}} [{{case.divisions}}]{% if not case.is_open %}, closed on {{case.close_date}}{% endif %}</h3>

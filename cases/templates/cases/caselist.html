@@ -1,15 +1,17 @@
 {% extends "base.html" %} 
 {% load bootstrap4 %} {% load static %}
 {% block title %}Current cases{% endblock %} 
+
 {% block extra_head %}
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-	<script src="{% static 'cases/js/caselist.js' %}" type="text/javascript"></script>	
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="{% static 'cases/js/caselist.js' %}" type="text/javascript"></script>	
 {% endblock %} 
+
 {% block body %}
-	<button id="show-all-cases-toggle" type="button" class="btn btn-md btn-light" style="float:right">Show all cases</button>
-	<h2 id="case-list-page-title" style="clear:left">Open cases</h2> {% if error_message %}
-	<p><strong>{{ error_message }}</strong></p>{% endif %} 
-	<div id="case-list" class="clearfix">
+<button id="show-all-cases-toggle" type="button" class="btn btn-md btn-light" style="float:right">Show all cases</button>
+<h2 id="case-list-page-title" style="clear:left">Open cases</h2> {% if error_message %}
+<p><strong>{{ error_message }}</strong></p>{% endif %} 
+<div id="case-list" class="clearfix">
 	{% for case in case_list %}
 		<div class="case-card{{case.is_open|yesno:', closed-case'}}" href="{% url 'cases:case_detail' case.pk %}" onclick="location.href='{% url 'cases:case_detail' case.pk %}';">
 			<div class="case-card-contents-masked">
@@ -31,5 +33,5 @@
 		  </div>
 		</div>
 	{% endfor %} 
-	</div>
+</div>
 {% endblock %}
