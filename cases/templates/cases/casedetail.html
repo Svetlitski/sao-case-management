@@ -3,7 +3,7 @@
 {% block title %}{{case.client_name}}{% endblock %}
 
 {% block extra_head %}
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
 <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/base/jquery-ui.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 <script> var clientName = "{{ case.client_name }}"; </script>
@@ -12,17 +12,32 @@
 {% endblock %} 
 
 {% block body %}
+
 <div id="case-detail-btns" class="btn-group-vertical btn-group-sm">
 <a href="{% url 'cases:case_open_close' case.pk %}?next={{request.path|urlencode}}" class="btn {{case.is_open|yesno:'btn-danger,btn-success'}}">{{case.is_open|yesno:'Close,Reopen'}} case</a>
-<button id="show-client-information-toggle" type="button" class="btn btn-light">Hide client information</button>
 
 </div>
-	<div id="client-information">
-		<h3 style="clear:left">{{case.client_name}} [{{case.divisions}}]{% if not case.is_open %}, closed on {{case.close_date}}{% endif %}</h3>
-		<p> {% if case.client_phone %} <i class="fa fa-phone"></i> {{case.display_client_phone}}{% endif %} {% if case.client_email %} {{case.client_phone|yesno:" | ,"}} <i class="fa fa-envelope"></i><a href="mailto:{{case.client_email}}"> 
-				  {{case.client_email}}</a>{% endif %} {% if case.client_SID %} | <i class="fa fa-id-card"></i> {{case.client_SID}}{% endif %}
+
+	<div id="info-block" class="clearfix">
+
+	<div id="client-information" class="clearfix">
+		
+		<h4 style="clear:left">{{case.client_name}} {% if not case.is_open %}, closed on {{case.close_date}}{% endif %}</h4>
+
+		 <p>[{{case.divisions}}]</p>
+
+		<p> {% if case.client_email %} <i class="fa fa-envelope"></i><a href="mailto:{{case.client_email}}"> {{case.client_email}}</a>{% endif %} </p>
+		<p>{% if case.client_phone %} <i class="fa fa-phone"></i> {{case.display_client_phone}}{% endif %}{{case.client_phone|yesno:" |, "}}{% if case.client_SID %} <i class="fa fa-id-card"></i> {{case.client_SID}}{% endif %}
 		</p>
+		{% if case.client_SID and case.client_email and case.client_phone %}
+		<p><i class="fa fa-id-card"></i> {{case.client_SID}}</p>{% endif %}
+	
 	</div>
+	<a id="update-client-info-btn" title="Edit client information"
+		href="{% url 'cases:case_change' case.pk %}"><i class="fa fa-edit"></i></a>
+	<button id="show-client-information-toggle"><i class="fa fa-angle-left"></i></button>
+</div>
+
 	<div id="case-detail-contents">
 		<div id="updates">
 		  {% for update in case.caseupdate_set.all %}

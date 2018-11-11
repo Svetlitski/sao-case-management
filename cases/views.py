@@ -54,6 +54,13 @@ class CaseDetailView(LoginRequiredMixin, FormMixin, generic.DetailView):
         form.save()
         return super(CaseDetailView, self).form_valid(form)
 
+class CaseChangeView(LoginRequiredMixin, generic.UpdateView):
+    model = Case
+    template_name = 'cases/casechange.html'
+    fields = ['client_name', 'client_phone', 'client_email', 'client_SID']
+
+    def get_success_url(self):
+        return reverse('cases:case_detail', args=(self.object.pk,))
 
 class CaseOpenCloseView(LoginRequiredMixin, generic.edit.UpdateView):
     model = Case

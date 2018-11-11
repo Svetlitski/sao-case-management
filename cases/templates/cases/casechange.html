@@ -1,0 +1,17 @@
+{% extends "base.html" %} 
+{% load bootstrap4 %}
+{% load static %} 
+{% block title %}Update case{% endblock %}
+
+{% block extra_head %}
+{{form.media}} 
+{% endblock %} 
+
+{% block body %}
+<h2>Update client information</h2>
+<form role="form" action="" method="post">
+  {% csrf_token %} 
+  {% bootstrap_form form %}
+  <button id=type="submit" class="btn btn-primary">Submit</button>
+</form>
+{% endblock %}
