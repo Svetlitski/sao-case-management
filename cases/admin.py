@@ -71,7 +71,7 @@ class CaseAdmin(admin.ModelAdmin):
     search_fields = ['incident_description']
     autocomplete_fields = ['caseworkers']
     actions = [close_cases, reopen_cases]
-    formfield_overrides = {HTMLField: {'widget': TinyMCE(mce_attrs={'width': '100%', **TINY_MCE_SETUP})}}
+    formfield_overrides = {HTMLField: {'widget': TinyMCE(mce_attrs={'width': '75%', **TINY_MCE_SETUP})}}
 
     def get_queryset(self, request):
         qs = super().get_queryset(request)

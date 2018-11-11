@@ -50,7 +50,7 @@
 		  {% endfor %}
 		</div>
 		<div id="case-description">
-		  <h4>Intake report [{{case.open_date}}]</h4>
+		  <h4>Intake report [{% if case.intake_caseworker %}entered by {{case.intake_caseworker.name}} on {% endif %}{{case.open_date}}]</h4>
 		  {{ case.incident_description|safe }}
 		</div>
 		{% if case.is_open %}
