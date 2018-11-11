@@ -29,13 +29,11 @@
 		<p> {% if case.client_email %} <i class="fa fa-envelope"></i><a href="mailto:{{case.client_email}}"> {{case.client_email}}</a>{% endif %} </p>
 		<p>{% if case.client_phone %} <i class="fa fa-phone"></i> {{case.display_client_phone}}{% endif %}{{case.client_phone|yesno:" |, "}}{% if case.client_SID %} <i class="fa fa-id-card"></i> {{case.client_SID}}{% endif %}
 		</p>
-		{% if case.client_SID and case.client_email and case.client_phone %}
-		<p><i class="fa fa-id-card"></i> {{case.client_SID}}</p>{% endif %}
 	
 	</div>
 	<a id="update-client-info-btn" title="Edit client information"
 		href="{% url 'cases:case_change' case.pk %}"><i class="fa fa-edit"></i></a>
-	<button id="show-client-information-toggle"><i class="fa fa-angle-left"></i></button>
+	<button id="show-client-information-toggle" title="Show/hide client information"><i class="fa fa-angle-left"></i></button>
 </div>
 
 	<div id="case-detail-contents">
