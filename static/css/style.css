@@ -88,6 +88,10 @@ header {
     visibility: visible;
     opacity: 1;
     z-index: 1;
+	height: 155px;
+	width: 300px;
+	overflow: hidden;
+	white-space: nowrap;
 }
 
 
@@ -139,10 +143,9 @@ header {
 
 /* Case detail view */
 
-#case-detail-btns {
+#close-case-button {
     float: right;
     margin-bottom: 20px;
-    max-width: initial;
 }
 
 .btn, .btn:focus,.btn:active,.btn:active:focus {
@@ -152,7 +155,7 @@ header {
 
 #case-detail-contents {
     position: relative;
-    top: 60px;
+    top: 70px;
     height: 100%;
     width: 100%;
     display: flex;
@@ -200,7 +203,7 @@ header {
 
 #show-client-information-toggle {
     height: 100px;
-    max-height: 100px;
+
     width: 20px;
     position: relative;
     box-shadow: none;
@@ -222,6 +225,7 @@ header {
 }
 
 #update-client-info-btn {
+	height: 20px;
     margin: 5px;
 }
 

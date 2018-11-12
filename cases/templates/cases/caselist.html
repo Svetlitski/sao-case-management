@@ -3,14 +3,14 @@
 {% block title %}Current cases{% endblock %} 
 
 {% block extra_head %}
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
 <script src="{% static 'cases/js/caselist.js' %}" type="text/javascript"></script>	
 {% endblock %} 
 
 {% block body %}
-<button id="show-all-cases-toggle" type="button" class="btn btn-md btn-light" style="float:right">Show all cases</button>
-<h2 id="case-list-page-title" style="clear:left">Open cases</h2> {% if error_message %}
-<p><strong>{{ error_message }}</strong></p>{% endif %} 
+<button id="show-all-cases-toggle" type="button" class="btn btn-md btn-light">Show all cases</button>
+<h2 id="case-list-page-title" style="clear:left">Open cases</h2> 
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %} 
 <div id="case-list" class="clearfix">
 	{% for case in case_list %}
 		<div class="case-card{{case.is_open|yesno:', closed-case'}}" href="{% url 'cases:case_detail' case.pk %}" onclick="location.href='{% url 'cases:case_detail' case.pk %}';">
@@ -20,7 +20,7 @@
 			<div class="case-card-contents">
 			  <h3>{{case.client_name}}</h3>
 			  <ul class="fa-ul">
-			    <li title="Date case was opened"><i class="fa-li fa fa-calendar"></i>{{ case.open_date }}</li>
+			    <li title="Date case was opened"><i class="fa-li far fa-calendar-alt"></i>{{ case.open_date }}</li>
 			    {% if case.client_phone %}
 			    <li title="Phone number"><i class="fa-li fa fa-phone"></i>{{case.display_client_phone}}</li> {% endif %} {% if case.client_email %}
 			    <li title="Email"><i class="fa-li fa fa-envelope"></i><a href="mailto:{{case.client_email}}">{{case.client_email}}</a></li> {% endif %} {% if case.client_SID %}
@@ -29,7 +29,7 @@
 			</div>
 
 		  <div class="card-foot">
-		    <p title="Last updated {{ case.last_updated|timesince }} ago"><i class="fa fa-clock-o" style="margin-right:10px"></i> {{ case.last_updated|timesince }}</p>
+		    <p title="Last updated {{ case.last_updated|timesince }} ago"><i class="far fa-clock" style="margin-right:10px"></i> {{ case.last_updated|timesince }}</p>
 		  </div>
 		</div>
 	{% endfor %} 

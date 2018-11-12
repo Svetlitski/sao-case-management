@@ -21,8 +21,18 @@ DIVISION_CHOICES = (
 )
 
 
-# An individual caseworker
+
 class Person(models.Model):
+    """
+    Represents an individual caseworker. Akin to a User's profile. This class would be better
+    named 'Caseworker', but because the system is now in production and changing the name would
+    require modifying the tables in the database, it's been left as is.
+
+    :instance_attribute name: The caseworker's full name (i.e. first and last, separated by a space)
+    :instance_attribute division: The division the caseworker is a part of (for executive leadership this should
+    be assigned to the division they used to be a part of).
+    :instance_attribute account: The User associated with this caseworker
+    """
     name = models.CharField(max_length=30)
     division = models.CharField(
         max_length=3,
@@ -33,11 +43,11 @@ class Person(models.Model):
         User, on_delete=models.CASCADE, blank=True, null=True, related_name='caseworker')
 
     def __str__(self):
-        num_open = self.number_of_active_cases
+        num_open = self.number_of_open_cases
         return self.name + ": " + str(num_open) + (" open case" if num_open == 1 else " open cases")
 
     @property
-    def number_of_active_cases(self):
+    def number_of_open_cases(self):
         return self.case_set.filter(is_open=True).count()
 
     class Meta:
@@ -46,6 +56,22 @@ class Person(models.Model):
 
 
 class Case(models.Model):
+    """
+    A case – an individual's grievance with the university plus the members of the office who are assisting them.
+    
+    :instance_attribute client_name: The client's full name (i.e. first and last, separated by a space)
+    :instance_attribute client_email: The client's email address
+    :instance_attribute client_phone: The client's phone number
+    :instance_attribute client_SID: The client's UC Berkeley Student Identification number
+    :instance_attribute incident_description: A summary of the client's situation/grievance, recorded by the intake caseworker
+    :instance_attribute open_date: The date this case was opened, usually the day the intake was submitted
+    :instance_attribute close_date: The date the case was closed. Note that if a case is reopened this information is lost
+    :instance_attribute intake_caseworker: The caseworker who submitted the intake which created this case
+    :instance_attribute caseworkers: The caseworker(s) assigned to this case
+    :instance_attribute divisions: Which of the four divisions this case falls under
+    :instance_attribute is_open: Whether or not this case is still open (i.e. being actively worked on)
+    :instance_attribute last_updated: The last time a case update was made for this case
+    """
     client_name = models.CharField(max_length=30)
     client_email = models.EmailField(blank=True)
     client_phone = PhoneNumberField(blank=True)
@@ -65,13 +91,20 @@ class Case(models.Model):
         return self.client_name + ", " + str(self.open_date) + ", " + str(self.divisions)
 
     def clean(self):
+        """
+        When a case is submitted *some* contact information must be recorded in the system,
+        otherwise there is no way to follow up with the client!
+        """
         if(not (self.client_email or self.client_phone)):
             raise ValidationError(
                 "You must record the client's contact information.")
 
     def updates(self):
-        # I apologize if anyone else is reading this code
-        # Hopefully will refactor eventually
+        """
+        Returns a html escaped string which contains all of the information associated with
+        the case updates which have been made for this case, all nicely formatted for display
+        on the admin site.
+        """
         if self.caseworkers.count() > 1:
             update_descriptions = (((update.creation_date.strftime("%B %d, %Y at %I:%M %p"), '[' + update.creator.name + ']'if update.creator is not None else '', mark_safe(update.update_description)) for update in self.caseupdate_set.all()))
         else:
@@ -79,6 +112,10 @@ class Case(models.Model):
         return format_html_join('', "<p> <b> {} {}</b></p> {} ", update_descriptions)
 
     def display_client_phone(self):
+        """
+        Formats the client's phone number for display, removing the country code
+        if the number is a US number.
+        """
         phone_string = str(self.client_phone)
         formatted_phone_string_without_country_code = phone_string[2:5] + \
             '-' + phone_string[5:8] + '-' + phone_string[8:]
@@ -89,6 +126,10 @@ class Case(models.Model):
 
     @property
     def client_initials(self):
+        """ 
+        Used in the CaseList view to allow a user to identify a case
+        without the client's name or personal information being displayed.
+        """
         return '.'.join([name[0] for name in self.client_name.split()])
 
     class Meta:
@@ -96,6 +137,15 @@ class Case(models.Model):
 
 
 class CaseUpdate(models.Model):
+    """
+    A case update, created to record progress made and new information learned
+    during the course of a case
+
+    :instance_attribute case: The case this update is about
+    :instance_attribute creation_date: The date and time this update was created
+    :instance_attribute update_description: The information this update is recording
+    :instance_attribute creator: The caseworker who created this update (useful when multiple people are assigned to a case)
+    """
     case = models.ForeignKey(
         Case, on_delete=models.CASCADE, blank=True, null=True)
     creation_date = models.DateTimeField(auto_now_add=True)

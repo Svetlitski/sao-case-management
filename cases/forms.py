@@ -33,6 +33,15 @@ class CaseUpdateForm(ModelForm):
 
 
 class IntakeForm(ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields.keys():
+            """
+            Having the user's web browser autocomplete any of the fields
+            on the intake form makes no sense, so we prevent it from occurring.
+            """
+            self.fields[field].widget.attrs.update(autocomplete='off')
+
     class Meta:
         model = Case
         fields = ['divisions', 'client_name',
@@ -43,6 +52,11 @@ class IntakeForm(ModelForm):
                    'intake_caseworker': forms.HiddenInput()}
 
     def build_notification_email(self, object_id):
+        """
+        Builds a notification email addressed to the internal chief, advocate,
+        and relevant division leads informing them that a new case has been created 
+        upon submission of the IntakeForm.
+        """
         notification_mail = Mail()
         notification_mail.from_email = Email(
             'notifications@saoberkeley.herokuapp.com')
@@ -64,4 +78,4 @@ class IntakeForm(ModelForm):
     def send_notification_email(self, object_id):
         sg = sendgrid.SendGridAPIClient(apikey=os.environ['SENDGRID_API_KEY'])
         data = self.build_notification_email(object_id)
-        response = sg.client.mail.send.post(request_body=data)
+        sg.client.mail.send.post(request_body=data)

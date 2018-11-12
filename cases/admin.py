@@ -12,14 +12,26 @@ class CasesInline(admin.TabularInline):
     extra = 0
     verbose_name = 'case'
     verbose_name_plural = 'cases'
+    template = 'admin/tabular.html'
+
 
     def get_queryset(self, request):
+        """
+        Filters case queryset so that executive leadership (users in 'Office Leads')
+        can see all cases associated with a caseworker, but division leads can only see
+        the cases which fall under their division
+        """
         qs = super().get_queryset(request)
         if request.user in Group.objects.get(name='Office Leads').user_set.all():
             return qs  # Chiefs and advocate can see everything
         return qs.filter(case__divisions__contains=request.user.caseworker.division)
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        """
+        Filters case queryset so that executive leadership (users in 'Office Leads')
+        can see all cases associated with a caseworker, but division leads can only see
+        the cases which fall under their division
+        """
         if db_field.name == 'case' and request.user not in Group.objects.get(name='Office Leads').user_set.all():
             kwargs["queryset"] = Case.objects.filter(divisions__contains=request.user.caseworker.division)
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
@@ -28,13 +40,26 @@ class CasesInline(admin.TabularInline):
 @admin.register(Person)
 class PersonAdmin(admin.ModelAdmin):
     fields = ['name', 'division', 'account']
-    list_display = ('name', 'division', 'number_of_active_cases')
+    list_display = ('name', 'division', 'number_of_open_cases')
     list_filter = ['division']
     search_fields = ['name']
     inlines = [CasesInline]
 
+    def change_view(self, request, object_id, form_url='', extra_context=None):
+        extra_context = extra_context or {}
+        if request.user in Group.objects.get(name='Office Leads').user_set.all():
+            extra_context['case_statuses'] = [case_caseworkers.case.is_open for case_caseworkers in Case.caseworkers.through.objects.filter(person_id=object_id)]
+        else:
+            extra_context['case_statuses'] = [case_caseworkers.case.is_open for case_caseworkers in Case.caseworkers.through.objects.filter(person_id=object_id).filter(case__divisions__contains=request.user.caseworker.division)]
+        return super().change_view(request, object_id, form_url, extra_context=extra_context)
 
 class DivisionsListFilter(admin.SimpleListFilter):
+    """
+    A custom list filter to filter objects by division.
+    Neccessary because django-multiselect-field package is used
+    with division on Case objects, and the MultiSelectField
+    provided by it is not automatically supported by the django admin.
+    """
     title = 'division'
     parameter_name = 'division'
 
@@ -48,10 +73,16 @@ class DivisionsListFilter(admin.SimpleListFilter):
 
 
 def close_cases(modeladmin, request, queryset):
+    """
+    Closes selected cases and records the current date as the cases' close date.
+    """
     queryset.update(is_open=False, close_date=timezone.now())
 
 
 def reopen_cases(modeladmin, request, queryset):
+    """
+    Reopens selected cases and removes their close dates.
+    """
     queryset.update(is_open=True, close_date=None)
 
 
@@ -68,12 +99,17 @@ class CaseAdmin(admin.ModelAdmin):
     list_display = ('get_divisions_display',
                     'open_date', 'client_name', 'is_open')
     list_filter = ['open_date', 'is_open', DivisionsListFilter]
-    search_fields = ['incident_description']
+    search_fields = ['incident_description', 'client_name']
     autocomplete_fields = ['caseworkers']
     actions = [close_cases, reopen_cases]
     formfield_overrides = {HTMLField: {'widget': TinyMCE(mce_attrs={'width': '75%', **TINY_MCE_SETUP})}}
 
     def get_queryset(self, request):
+        """
+        Filters case queryset so that executive leadership (users in 'Office Leads')
+        can see all cases in the system, but division leads can only see
+        the cases which fall under their division
+        """
         qs = super().get_queryset(request)
         if request.user in Group.objects.get(name='Office Leads').user_set.all():
             return qs  # Chiefs and advocate can see everything

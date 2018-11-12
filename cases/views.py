@@ -1,6 +1,5 @@
 from django.views import generic
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import redirect
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse
 from django.utils import timezone
 from django.views.generic.edit import FormMixin
@@ -10,8 +9,20 @@ from .models import Case
 from .forms import CaseUpdateForm, IntakeForm
 
 
-# Information on all of one caseworker's cases
+class UserAssignedToCaseMixin(UserPassesTestMixin):
+    """
+    Responds with 403 Forbidden if a user attempts to access a case
+    which they are not assigned to.
+    """ 
+    def test_func(self):
+        self.object = self.get_object()
+        return self.request.user.caseworker in self.object.caseworkers.all()
+
+
 class CaseListView(LoginRequiredMixin, generic.ListView):
+    """
+    Displays all the cases assigned to a user, serving as a homepage.
+    """ 
     model = Case
     template_name = 'cases/caselist.html'
 
@@ -21,8 +32,14 @@ class CaseListView(LoginRequiredMixin, generic.ListView):
         return context
 
 
-# Overview of all the information and updates for a single case
-class CaseDetailView(LoginRequiredMixin, FormMixin, generic.DetailView):
+class CaseDetailView(LoginRequiredMixin, UserAssignedToCaseMixin, FormMixin, generic.DetailView):
+    """
+    Displays detailed information on a single case including: the client's name and contact
+    information, the case intake description and the name of the intake caseworker,
+    and all updates associated with the case. If the case is closed the close date is also shown.
+    A case is also managed through this view, updates are added from this view and the 
+    CaseChange and CaseOpenClose views for a case are linked from here.
+    """
     model = Case
     template_name = 'cases/casedetail.html'
     form_class = CaseUpdateForm
@@ -32,6 +49,7 @@ class CaseDetailView(LoginRequiredMixin, FormMixin, generic.DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(CaseDetailView, self).get_context_data(**kwargs)
+        # case and creator fields on case update are not shown to the user, but are instead filled in automatically here
         context['form'] = CaseUpdateForm(initial={'case': self.object, 'creator': self.request.user.caseworker})
         return context
 
@@ -43,26 +61,28 @@ class CaseDetailView(LoginRequiredMixin, FormMixin, generic.DetailView):
         else:
             return self.form_invalid(form)
 
-    def get(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        if request.user.caseworker in self.object.caseworkers.all():
-            return super(CaseDetailView, self).get(request, *args, **kwargs)
-        else:
-            return redirect(reverse('home'))
-
     def form_valid(self, form):
         form.save()
         return super(CaseDetailView, self).form_valid(form)
 
-class CaseChangeView(LoginRequiredMixin, generic.UpdateView):
+
+class CaseChangeView(LoginRequiredMixin, UserAssignedToCaseMixin, generic.UpdateView):
+    """
+    Allows a user to add/update information about the client of an existing case.
+    """
     model = Case
     template_name = 'cases/casechange.html'
     fields = ['client_name', 'client_phone', 'client_email', 'client_SID']
+    
 
     def get_success_url(self):
         return reverse('cases:case_detail', args=(self.object.pk,))
 
-class CaseOpenCloseView(LoginRequiredMixin, generic.edit.UpdateView):
+
+class CaseOpenCloseView(LoginRequiredMixin, UserAssignedToCaseMixin, generic.edit.UpdateView):
+    """
+    Simple view allowing a user to close or reopen a case.
+    """
     model = Case
     fields = []
     template_name = 'cases/caseopenclose.html'
@@ -80,8 +100,10 @@ class CaseOpenCloseView(LoginRequiredMixin, generic.edit.UpdateView):
         return super().form_valid(form)
 
 
-# Case intake form
 class IntakeView(LoginRequiredMixin, generic.FormView):
+    """
+    Allows a user to fill out an intake, creating a new case.
+    """
     template_name = 'cases/intake.html'
     form_class = IntakeForm
 

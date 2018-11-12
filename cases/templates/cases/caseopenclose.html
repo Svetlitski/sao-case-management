@@ -1,8 +1,9 @@
 {% extends "base.html" %} 
 {% load bootstrap4 %} 
+{% block title %}{{ case.is_open|yesno:"Close,Reopen" }} case{% endblock %}
 {% block body %}
   <div id="case-close-contents">
-    <h1>Are you sure you want to {{ case.is_open|yesno:"close,reopen" }} this case?</h1>
+		<h3>Are you sure you want to {{ case.is_open|yesno:"close,reopen" }} {{ case.client_name }}'s case?</h3>
     <form role="form" action="" method="post">
       {% csrf_token %} 
 	  {% bootstrap_form form %}

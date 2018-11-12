@@ -42,7 +42,7 @@ class UserFactory(factory.DjangoModelFactory):
         model = User
 
     username = 'user'
-    password = 'secretpass'
+    password = 'supersecretfake' # not used for anything
 
 
 class PersonFactory(factory.DjangoModelFactory):
@@ -63,6 +63,13 @@ class CaseUpdateFactory(factory.DjangoModelFactory):
         None if not o.case.close_date else o.case.close_date)).generate({}))
     update_description = factory.Faker('paragraph')
 
+    @factory.post_generation
+    def creator(self, create, extracted, **kwargs):
+        if extracted:
+            self.creator = extracted
+        elif self.case and self.case.caseworkers.count() > 0:
+            self.creator = random.choice(self.case.caseworkers.all())
+
 
 class CaseFactory(factory.DjangoModelFactory):
     class Meta:
@@ -74,7 +81,6 @@ class CaseFactory(factory.DjangoModelFactory):
     client_phone = factory.fuzzy.FuzzyAttribute(fuzzer=phone_number_fuzzer)
     client_SID = factory.Faker('isbn10', separator="")
     incident_description = factory.LazyFunction(lambda: '<p>' + factory.Faker('paragraph').generate({}) + '</p>')
-    # TODO make this override auto_add_now
     open_date = factory.Faker('past_date', start_date="-1y")
     close_date = factory.Maybe('is_open', yes_declaration=None,
                                no_declaration=factory.Faker('future_date', end_date="+180d"))
@@ -146,24 +152,28 @@ class CaseCloseOpenTest(TestCase):
 
     def test_close_case(self):
         caseworker = self.caseworkers[0]
-        number_open_cases = caseworker.number_of_active_cases
+        number_open_cases = caseworker.number_of_open_cases
         open_case = caseworker.case_set.get(is_open=True)
         open_case.is_open = False
         open_case.save()
-        self.assertEqual(caseworker.number_of_active_cases,
+        self.assertEqual(caseworker.number_of_open_cases,
                          number_open_cases - 1)
 
     def test_open_case(self):
         caseworker = self.caseworkers[0]
-        number_open_cases = caseworker.number_of_active_cases
+        number_open_cases = caseworker.number_of_open_cases
         closed_case = caseworker.case_set.get(is_open=False)
         closed_case.is_open = True
         closed_case.save()
-        self.assertEqual(caseworker.number_of_active_cases,
+        self.assertEqual(caseworker.number_of_open_cases,
                          number_open_cases + 1)
 
 
 def create_office(num_caseworkers=50, num_cases=200):
+    """
+    Flushes the database and then populates it with test data and creates a demo account.
+    Used to set things up locally for testing and demonstrations.
+    """
     if not settings.LOCAL:
         print("You can't run this in production! Aborting.")
         return
@@ -176,14 +186,14 @@ def create_office(num_caseworkers=50, num_cases=200):
             valid_input = True
     print('PLEASE CONFIRM YOU ARE 100% SURE OF WHAT YOU ARE DOING')
     management.call_command('flush', interactive=True)
-    print("Demo account created with username 'kevin'. Please enter a password.")
-    management.call_command('createsuperuser', username='kevin', email='kevin@berkeleysao.org')
-    kevin_caseworker = PersonFactory.create(name='Kevin Svetlitski', division='ACA', account=User.objects.get(username='kevin'))
-    caseworkers = [PersonFactory.create(division=div) for div in DIVISION_DATABASE_VALUES] + PersonFactory.create_batch(num_caseworkers - 5) + [kevin_caseworker]
+    print("Demo account created with username 'demo'. Please enter a password.")
+    management.call_command('createsuperuser', username='demo', email='demo@berkeleysao.org')
+    demo_caseworker = PersonFactory.create(name='Demo Caseworker', division='ACA', account=User.objects.get(username='demo'))
+    caseworkers = [PersonFactory.create(division=div) for div in DIVISION_DATABASE_VALUES] + PersonFactory.create_batch(num_caseworkers - 5) + [demo_caseworker]
     CaseFactory.create_batch(num_cases, caseworkers=caseworkers, intake_caseworker=caseworkers)
-    if kevin_caseworker.number_of_active_cases < 3:
-        num_cases += (3 - kevin_caseworker.number_of_active_cases)
-        CaseFactory.create_batch(3 - kevin_caseworker.number_of_active_cases, caseworkers=[kevin_caseworker], divisions=['ACA'], intake_caseworker=caseworkers)
+    if demo_caseworker.number_of_open_cases < 3:
+        num_cases += (3 - demo_caseworker.number_of_open_cases)
+        CaseFactory.create_batch(3 - demo_caseworker.number_of_open_cases, caseworkers=[demo_caseworker], divisions=['ACA'], intake_caseworker=caseworkers)
     Group.objects.create(name='Office Leads')
     Group.objects.create(name='Division Leads')
     print('Office successfully created with %d caseworkers and %d cases.' % (num_caseworkers, num_cases))

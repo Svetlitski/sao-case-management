@@ -13,7 +13,6 @@
   <link rel="stylesheet" href="{% static 'css/style.css' %}" type="text/css" media="screen" /> 
   <title>{% block title %}{% endblock %}</title>
   {% block extra_head %}{% endblock %}
-
 </head>
 <header>
   {% block navbar %}
@@ -35,7 +34,7 @@
       <ul class="navbar-nav mr-auto">
         {% with url_name=request.resolver_match.url_name %}
         <li class="nav-item" style="cursor: pointer;">
-          <a class="nav-link {% if url_name == 'case_list' or url_name == 'case_detail' or url_name == 'case_open_close' %}active{% endif %}" href="{% url 'cases:case_list' %}">Cases</a>
+          <a class="nav-link {% if url_name == 'case_list' or url_name == 'case_detail' or url_name == 'case_open_close'  or url_name == 'case_change' %}active{% endif %}" href="{% url 'cases:case_list' %}">Cases</a>
         </li>
         <li class="nav-item">
           <a class="nav-link {% if url_name == 'intake' %}active{% endif %}" href="{% url 'cases:intake' %}">Intake</a>
