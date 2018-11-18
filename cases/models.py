@@ -21,6 +21,14 @@ DIVISION_CHOICES = (
 )
 
 
+def get_current_date():
+    """
+    Used as default for open_date on Case.
+    Not defined as a lambda because Django can't serialize lambdas.
+    """
+    return timezone.localdate(timezone.now())
+
+
 
 class Person(models.Model):
     """
@@ -77,7 +85,7 @@ class Case(models.Model):
     client_phone = PhoneNumberField(blank=True)
     client_SID = models.CharField(max_length=10, blank=True)
     incident_description = HTMLField()
-    open_date = models.DateField('date case was opened', default=timezone.now)
+    open_date = models.DateField('date case was opened', default=get_current_date)
     close_date = models.DateField(
         'date case was closed', blank=True, null=True)
     intake_caseworker = models.ForeignKey(Person, null=True, blank=True, on_delete=models.SET_NULL, related_name='intakes')

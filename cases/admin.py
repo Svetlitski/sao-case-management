@@ -114,3 +114,19 @@ class CaseAdmin(admin.ModelAdmin):
         if request.user in Group.objects.get(name='Office Leads').user_set.all():
             return qs  # Chiefs and advocate can see everything
         return qs.filter(divisions__contains=request.user.caseworker.division)
+
+    def save_model(self, request, obj, form, change):
+        if change:
+            was_open_before_change = Case.objects.get(pk=obj.pk).is_open
+            if (not obj.is_open) and was_open_before_change and (not obj.close_date):
+                # If the case was just closed but the user did not input a close date, set the close date to today.
+                obj.close_date = timezone.now()
+            elif obj.is_open and (not was_open_before_change):
+                # If the case was just reopened, set the close date to None
+                obj.close_date = None
+        else:
+            if (not obj.is_open) and (not obj.close_date):
+                # If a new case was just created but is closed (i.e. consultation) and the user did not select a close date, set the close date to today
+                obj.close_date = timezone.now()
+        obj.save()
+

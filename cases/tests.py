@@ -8,9 +8,8 @@ from collections import defaultdict
 from django.conf import settings
 from django.core import management
 import phonenumbers
-DIVISION_DATABASE_VALUES = [pair[0] for pair in DIVISION_CHOICES]
 import re
-
+DIVISION_DATABASE_VALUES = [pair[0] for pair in DIVISION_CHOICES]
 
 
 def close_date_fuzzer():
@@ -25,16 +24,13 @@ def divisions_fuzzer():
 
 non_number = re.compile('[^\d]+')
 def phone_number_fuzzer():
-    phone_number = phonenumbers.parse('9999999999', 'US') # deliberately invalid
+    phone_number = phonenumbers.parse('9999999999', 'US')  # deliberately invalid
     while not phonenumbers.is_valid_number(phone_number):
         try:
             phone_number = phonenumbers.parse(non_number.sub('', factory.Faker('phone_number').generate({})), 'US')
-        except NumberParseException:
+        except phonenumbers.phonenumberutil.NumberParseException:
             pass
     return phonenumbers.format_number(phone_number, phonenumbers.PhoneNumberFormat.NATIONAL)
-    
-
-
 
 
 class UserFactory(factory.DjangoModelFactory):
@@ -42,7 +38,7 @@ class UserFactory(factory.DjangoModelFactory):
         model = User
 
     username = 'user'
-    password = 'supersecretfake' # not used for anything
+    password = 'supersecretfake'  # not used for anything
 
 
 class PersonFactory(factory.DjangoModelFactory):
