@@ -46,7 +46,7 @@ class IntakeForm(ModelForm):
         model = Case
         fields = ['divisions', 'client_name',
                   'client_email', 'client_phone', 'client_SID', 'open_date',
-                  'incident_description', 'intake_caseworker']
+                  'incident_description', 'intake_caseworker', 'referrer']
         widgets = {'client_phone': PhoneNumberInternationalFallbackWidget(),
                    'incident_description': TinyMCE(mce_attrs=TINY_MCE_SETUP),
                    'intake_caseworker': forms.HiddenInput()}

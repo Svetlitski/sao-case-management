@@ -1,4 +1,4 @@
-from .models import Case, Person, DIVISION_CHOICES
+from .models import Case, Person, Tag, DIVISION_CHOICES
 from django.contrib import admin
 from tinymce import HTMLField, TinyMCE
 from django.contrib.auth.models import Group
@@ -92,15 +92,15 @@ reopen_cases.short_description = "Reopen selected cases"
 
 @admin.register(Case)
 class CaseAdmin(admin.ModelAdmin):
-    fields = ['divisions', 'caseworkers', 'intake_caseworker', 'client_name',
-              'client_email', 'client_phone', 'client_SID', 'open_date',
-              'incident_description', 'is_open', 'close_date', 'updates']
+    fields = ['divisions', 'caseworkers', 'intake_caseworker', 'referrer', 'client_name',
+              'client_email', 'client_phone', 'client_SID', 'open_date', 'incident_description',
+              'tags', 'is_open', 'close_date', 'updates']
     readonly_fields = ['updates', 'intake_caseworker']
     list_display = ('get_divisions_display',
                     'open_date', 'client_name', 'is_open')
     list_filter = ['open_date', 'is_open', DivisionsListFilter]
     search_fields = ['incident_description', 'client_name']
-    autocomplete_fields = ['caseworkers']
+    autocomplete_fields = ['caseworkers', 'tags']
     actions = [close_cases, reopen_cases]
     formfield_overrides = {HTMLField: {'widget': TinyMCE(mce_attrs={'width': '75%', **TINY_MCE_SETUP})}}
 
@@ -130,3 +130,8 @@ class CaseAdmin(admin.ModelAdmin):
                 obj.close_date = timezone.now()
         obj.save()
 
+
+@admin.register(Tag)
+class TagAdmin(admin.ModelAdmin):
+    fields = ['value', 'acronym']
+    search_fields = ['value', 'acronym']

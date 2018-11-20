@@ -29,7 +29,6 @@ def get_current_date():
     return timezone.localdate(timezone.now())
 
 
-
 class Person(models.Model):
     """
     Represents an individual caseworker. Akin to a User's profile. This class would be better
@@ -94,6 +93,8 @@ class Case(models.Model):
     is_open = models.BooleanField('case open?', default=True)
     last_updated = models.DateTimeField(
         'time since last update', auto_now_add=True)
+    referrer = models.ForeignKey('Tag', null=True, blank=True, on_delete=models.SET_NULL, related_name='referred_cases')
+    tags = models.ManyToManyField('Tag', blank=True, related_name='cases')
 
     def __str__(self):
         return self.client_name + ", " + str(self.open_date) + ", " + str(self.divisions)
@@ -165,3 +166,21 @@ class CaseUpdate(models.Model):
 
     class Meta:
         ordering = ['-creation_date']  # ordered by most recent
+
+
+class Tag(models.Model):
+    """
+    A category, classification, topic, or organization relevant to a case.
+    Tags are meaningful labels that make the data stored in the case management system more useful
+    by allowing trends to be identified.
+
+    :instance_attribute value: What this tag labels (e.g. a tag created to identify academic misconduct cases would have the value 'Academic misconduct')
+    :instance_attribute acronym: The common acronym or abbreviation of this tag's value, if it has one (e.g. the tag with value 'Center for Student Conduct'
+    would have acronym 'CSC'). This attribute exists so that the a can be searched by either its value or common acronym, because in many instances
+    each is used with near equal frequency to refer to the same concept/organization/classification.
+    """
+    value = models.CharField(max_length=50)
+    acronym = models.CharField(max_length=10, blank=True)
+
+    def __str__(self):
+        return self.value
