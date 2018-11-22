@@ -93,7 +93,7 @@ class Case(models.Model):
     is_open = models.BooleanField('case open?', default=True)
     last_updated = models.DateTimeField(
         'time since last update', auto_now_add=True)
-    referrer = models.ForeignKey('Tag', null=True, blank=True, on_delete=models.SET_NULL, related_name='referred_cases')
+    referrer = models.ForeignKey('Tag', verbose_name="How did the client hear about the office?", null=True, blank=True, on_delete=models.SET_NULL, related_name='referred_cases')
     tags = models.ManyToManyField('Tag', blank=True, related_name='cases')
 
     def __str__(self):
@@ -179,8 +179,11 @@ class Tag(models.Model):
     would have acronym 'CSC'). This attribute exists so that the a can be searched by either its value or common acronym, because in many instances
     each is used with near equal frequency to refer to the same concept/organization/classification.
     """
-    value = models.CharField(max_length=50)
-    acronym = models.CharField(max_length=10, blank=True)
+    value = models.CharField(max_length=50, help_text="Full name of the thing this tag is labelling (e.g. 'Center for Student Conduct')")
+    acronym = models.CharField(max_length=10, blank=True, help_text="Common acronym/abbreviation for this tag, if it has one (e.g. 'CSC' )")
 
     def __str__(self):
         return self.value
+
+    class Meta:
+        ordering = ['value']

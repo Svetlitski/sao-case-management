@@ -1,6 +1,6 @@
 from django.forms import ModelForm
 from django import forms
-from .models import Case, CaseUpdate
+from .models import Case, CaseUpdate, Tag
 from django.contrib.auth.models import Group
 from django.urls import reverse
 from phonenumber_field.widgets import PhoneNumberInternationalFallbackWidget
@@ -8,6 +8,8 @@ import sendgrid
 import os
 from sendgrid.helpers.mail import *
 from tinymce import TinyMCE
+from django.contrib.admin.widgets import AutocompleteSelect
+from django.contrib.admin import site as admin_site
 
 TINY_MCE_SETUP = {'browser_spellcheck': True, 'valid_elements': 'a,strong,p,ul,ol,li,em,h1,h2,h3', 'valid_children': '-li[p]',
                   'toolbar': ['formatselect | bold italic | bullist numlist link'], 'statusbar': False,
@@ -49,7 +51,9 @@ class IntakeForm(ModelForm):
                   'incident_description', 'intake_caseworker', 'referrer']
         widgets = {'client_phone': PhoneNumberInternationalFallbackWidget(),
                    'incident_description': TinyMCE(mce_attrs=TINY_MCE_SETUP),
-                   'intake_caseworker': forms.HiddenInput()}
+                   'intake_caseworker': forms.HiddenInput(),
+                   'referrer': AutocompleteSelect(rel=Tag.cases.rel, admin_site=admin_site),
+                   }
 
     def build_notification_email(self, object_id):
         """

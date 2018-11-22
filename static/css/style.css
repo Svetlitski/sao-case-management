@@ -255,3 +255,7 @@ header {
 #help-text > ul {
     width: 400px;
 }
+
+label[for="id_referrer"], label[for="id_tags"] {
+	display: block;
+}

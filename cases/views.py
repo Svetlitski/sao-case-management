@@ -1,11 +1,14 @@
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.forms.models import modelform_factory
 from django.urls import reverse
 from django.utils import timezone
 from django.views.generic.edit import FormMixin
 from django.conf import settings
-
-from .models import Case
+from django.contrib.admin.widgets import AutocompleteSelectMultiple
+from django.contrib.admin.widgets import AutocompleteSelect
+from django.contrib.admin import site as admin_site
+from .models import Case, Tag
 from .forms import CaseUpdateForm, IntakeForm
 
 
@@ -72,8 +75,10 @@ class CaseChangeView(LoginRequiredMixin, UserAssignedToCaseMixin, generic.Update
     """
     model = Case
     template_name = 'cases/casechange.html'
-    fields = ['client_name', 'client_phone', 'client_email', 'client_SID']
-    
+    form_class = modelform_factory(Case, fields = ['client_name', 'client_phone', 'client_email', 'client_SID', 'referrer', 'tags'], widgets = {
+               'referrer': AutocompleteSelect(rel=Tag.cases.rel, admin_site=admin_site),
+               'tags': AutocompleteSelectMultiple(rel=Case.tags.rel, admin_site=admin_site)
+               })
 
     def get_success_url(self):
         return reverse('cases:case_detail', args=(self.object.pk,))
@@ -120,3 +125,4 @@ class IntakeView(LoginRequiredMixin, generic.FormView):
         if not settings.LOCAL:
             form.send_notification_email(case.id)
         return super().form_valid(form)
+
