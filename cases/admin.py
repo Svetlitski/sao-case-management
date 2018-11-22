@@ -4,7 +4,12 @@ from tinymce import HTMLField, TinyMCE
 from django.contrib.auth.models import Group
 from django.utils import timezone
 from cases.forms import TINY_MCE_SETUP
+from django.urls import reverse
+
 admin.AdminSite.site_header = "SAO Case Administration"
+admin.AdminSite.index_title = "SAO Case Administration"
+admin.AdminSite.site_title = "SAO Admin"
+admin.AdminSite.has_permission = lambda self, request: True  # Hack to allow tag autocomplete widget to work for non-staff users
 
 
 class CasesInline(admin.TabularInline):
@@ -13,7 +18,6 @@ class CasesInline(admin.TabularInline):
     verbose_name = 'case'
     verbose_name_plural = 'cases'
     template = 'admin/tabular.html'
-
 
     def get_queryset(self, request):
         """
@@ -52,6 +56,7 @@ class PersonAdmin(admin.ModelAdmin):
         else:
             extra_context['case_statuses'] = [case_caseworkers.case.is_open for case_caseworkers in Case.caseworkers.through.objects.filter(person_id=object_id).filter(case__divisions__contains=request.user.caseworker.division)]
         return super().change_view(request, object_id, form_url, extra_context=extra_context)
+
 
 class DivisionsListFilter(admin.SimpleListFilter):
     """
@@ -133,5 +138,17 @@ class CaseAdmin(admin.ModelAdmin):
 
 @admin.register(Tag)
 class TagAdmin(admin.ModelAdmin):
-    fields = ['value', 'acronym']
     search_fields = ['value', 'acronym']
+
+    def get_fieldsets(self, request, obj=None):
+            return [(None, {'fields': ['value', 'acronym'],
+                'description': '<h3>Please <a href="%s">search for a tag</a> to see if it already exists before creating a new one.</h3>' % reverse('admin:cases_tag_changelist') if not obj else ''
+                            }),
+                    ]
+
+    def has_view_permission(self, request, obj=None):
+        """
+        Grants all authenticated users tag view permission so that autocomplete widget results populate.
+        """
+        return request.user.is_authenticated
+
