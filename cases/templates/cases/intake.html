@@ -12,9 +12,10 @@
 
 {% block body %}
 <h2>Intake form</h2>
-<form role="form" action="" method="post">
+<form role="form" action="" name="intake" method="post" onsubmit="return submitIntake()">
   {% csrf_token %} 
   {% bootstrap_form form %}
-  <button id=type="submit" class="btn btn-primary">Submit</button>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@7.29.1/dist/sweetalert2.all.min.js" integrity="sha256-sPAIQlZYcmYHwS/pOLExnBqdh7rnChqDpGsHZVHR+YI=" crossorigin="anonymous"></script>
+  <button type="submit" class="btn btn-primary">Submit</button>
 </form>
 {% endblock %}

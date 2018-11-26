@@ -43,6 +43,7 @@ class IntakeForm(ModelForm):
             on the intake form makes no sense, so we prevent it from occurring.
             """
             self.fields[field].widget.attrs.update(autocomplete='off')
+        self.fields['incident_description'].required = False  # Neccessary for validation on other fields to work properly
 
     class Meta:
         model = Case
