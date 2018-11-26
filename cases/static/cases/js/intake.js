@@ -57,3 +57,23 @@ $(function() {
         }
     });
 });
+
+function submitIntake(event) {
+	if (document.getElementsByClassName("select2-selection__placeholder").length > 0) { // if no referrer selected
+		swal({
+		  title: 'Are you sure?',
+		  text: "You have not recorded how the client heard about the office. Would you like to submit the intake anyway?",
+		  type: 'warning',
+		  focusCancel: true,
+		  showCancelButton: true,
+		  confirmButtonColor: '#d33',
+		  cancelButtonColor: '#d2d4d6',
+		  confirmButtonText: 'Yes, submit it anyway',
+		  cancelButtonText: "No, I'll fill that out"
+
+		}).then((result) => (result.value ? document.getElementsByTagName("form")[0].submit() : false));
+		return false;
+	}
+	return true;
+  }
+

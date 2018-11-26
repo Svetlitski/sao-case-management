@@ -104,7 +104,7 @@ class CaseAdmin(admin.ModelAdmin):
     list_display = ('get_divisions_display',
                     'open_date', 'client_name', 'is_open')
     list_filter = ['open_date', 'is_open', DivisionsListFilter]
-    search_fields = ['incident_description', 'client_name']
+    search_fields = ['tags__value', 'tags__acronym', 'client_name']
     autocomplete_fields = ['caseworkers', 'referrer', 'tags']
     actions = [close_cases, reopen_cases]
     formfield_overrides = {HTMLField: {'widget': TinyMCE(mce_attrs={'width': '75%', **TINY_MCE_SETUP})}}
