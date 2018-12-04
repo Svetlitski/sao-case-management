@@ -180,7 +180,7 @@ class Tag(models.Model):
     each is used with near equal frequency to refer to the same concept/organization/classification.
     """
     value = models.CharField(max_length=50, help_text="Full name of the thing this tag is labelling (e.g. 'Center for Student Conduct')")
-    acronym = models.CharField(max_length=10, blank=True, help_text="Common acronym/abbreviation for this tag, if it has one (e.g. 'CSC' )")
+    acronym = models.CharField(max_length=20, blank=True, help_text="Common acronym/abbreviation for this tag, if it has one (e.g. 'CSC' )")
 
     def __str__(self):
         return self.value
