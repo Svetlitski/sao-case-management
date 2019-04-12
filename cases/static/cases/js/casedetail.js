@@ -19,14 +19,12 @@ $(function() {
                 $infoBlock.css({'overflow':'hidden', 'white-space': 'nowrap'})
                 $('')
                 $infoBlock.animate({width: $('#show-client-information-toggle').outerWidth()})
-                $('title').text('Case details');
             } else {
                 $(this).data('clicked', false);
                 $(this).children().first().attr('class', 'fa fa-angle-left');
                 $('#client-information').fadeIn(500);
                 $('#update-client-info-btn').fadeIn(200);
                 $infoBlock.animate({width: originalWidth});
-                $('title').text(clientName); // clientName is global var declared in template
             }
         });
 });
