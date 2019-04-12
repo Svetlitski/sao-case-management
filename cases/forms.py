@@ -8,7 +8,7 @@ import sendgrid
 import os
 from sendgrid.helpers.mail import *
 from tinymce import TinyMCE
-from django.contrib.admin.widgets import AutocompleteSelect
+from django.contrib.admin.widgets import AutocompleteSelect, AutocompleteSelectMultiple
 from django.contrib.admin import site as admin_site
 
 TINY_MCE_SETUP = {'browser_spellcheck': True, 'valid_elements': 'a,strong,p,ul,ol,li,em,h1,h2,h3', 'valid_children': '-li[p]',
@@ -32,6 +32,27 @@ class CaseUpdateForm(ModelForm):
         case_update.case.save()
         case_update.save()
         return case_update
+
+
+class CaseChangeForm(ModelForm):
+    class Meta:
+        model = Case
+        fields = ['client_name', 'client_phone', 'client_email', 'client_SID', 'referrer', 'tags']
+        widgets = {
+               'referrer': AutocompleteSelect(rel=Tag.cases.rel, admin_site=admin_site),
+               'tags': AutocompleteSelectMultiple(rel=Case.tags.rel, admin_site=admin_site),
+                  }
+
+    def clean(self):
+        cleaned_data = super().clean()
+        tags = cleaned_data['tags']
+        case_divisons = self.instance.divisions
+        for tag in tags:
+            for div in tag.divisions:
+                if div in case_divisons:
+                    break
+            else:
+                raise forms.ValidationError("Invalid tag for case of this division")
 
 
 class IntakeForm(ModelForm):

@@ -1,6 +1,9 @@
 from django.views import generic
+from django.shortcuts import render
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib import messages
 from django.forms.models import modelform_factory
+from django import forms
 from django.urls import reverse
 from django.utils import timezone
 from django.views.generic.edit import FormMixin
@@ -9,14 +12,14 @@ from django.contrib.admin.widgets import AutocompleteSelectMultiple
 from django.contrib.admin.widgets import AutocompleteSelect
 from django.contrib.admin import site as admin_site
 from .models import Case, Tag
-from .forms import CaseUpdateForm, IntakeForm
+from .forms import CaseUpdateForm, IntakeForm, CaseChangeForm
 
 
 class UserAssignedToCaseMixin(UserPassesTestMixin):
     """
     Responds with 403 Forbidden if a user attempts to access a case
     which they are not assigned to.
-    """ 
+    """
     def test_func(self):
         self.object = self.get_object()
         return self.request.user.caseworker in self.object.caseworkers.all()
@@ -25,7 +28,7 @@ class UserAssignedToCaseMixin(UserPassesTestMixin):
 class CaseListView(LoginRequiredMixin, generic.ListView):
     """
     Displays all the cases assigned to a user, serving as a homepage.
-    """ 
+    """
     model = Case
     template_name = 'cases/caselist.html'
 
@@ -40,7 +43,7 @@ class CaseDetailView(LoginRequiredMixin, UserAssignedToCaseMixin, FormMixin, gen
     Displays detailed information on a single case including: the client's name and contact
     information, the case intake description and the name of the intake caseworker,
     and all updates associated with the case. If the case is closed the close date is also shown.
-    A case is also managed through this view, updates are added from this view and the 
+    A case is also managed through this view, updates are added from this view and the
     CaseChange and CaseOpenClose views for a case are linked from here.
     """
     model = Case
@@ -75,10 +78,7 @@ class CaseChangeView(LoginRequiredMixin, UserAssignedToCaseMixin, generic.Update
     """
     model = Case
     template_name = 'cases/casechange.html'
-    form_class = modelform_factory(Case, fields = ['client_name', 'client_phone', 'client_email', 'client_SID', 'referrer', 'tags'], widgets = {
-               'referrer': AutocompleteSelect(rel=Tag.cases.rel, admin_site=admin_site),
-               'tags': AutocompleteSelectMultiple(rel=Case.tags.rel, admin_site=admin_site)
-               })
+    form_class = CaseChangeForm
 
     def get_success_url(self):
         return reverse('cases:case_detail', args=(self.object.pk,))

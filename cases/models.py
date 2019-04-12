@@ -178,9 +178,11 @@ class Tag(models.Model):
     :instance_attribute acronym: The common acronym or abbreviation of this tag's value, if it has one (e.g. the tag with value 'Center for Student Conduct'
     would have acronym 'CSC'). This attribute exists so that the a can be searched by either its value or common acronym, because in many instances
     each is used with near equal frequency to refer to the same concept/organization/classification.
+    :instance_attribute divisions: The divisions this tag is valid for
     """
     value = models.CharField(max_length=50, help_text="Full name of the thing this tag is labelling (e.g. 'Center for Student Conduct')")
     acronym = models.CharField(max_length=20, blank=True, help_text="Common acronym/abbreviation for this tag, if it has one (e.g. 'CSC' )")
+    divisions = MultiSelectField(choices=DIVISION_CHOICES)
 
     def __str__(self):
         return self.value

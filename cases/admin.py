@@ -141,7 +141,7 @@ class TagAdmin(admin.ModelAdmin):
     search_fields = ['value', 'acronym']
 
     def get_fieldsets(self, request, obj=None):
-            return [(None, {'fields': ['value', 'acronym'],
+            return [(None, {'fields': ['value', 'acronym', 'divisions'],
                 'description': '<h3>Please <a href="%s">search for a tag</a> to see if it already exists before creating a new one.</h3>' % reverse('admin:cases_tag_changelist') if not obj else ''
                             }),
                     ]
